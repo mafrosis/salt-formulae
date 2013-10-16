@@ -18,13 +18,13 @@ I test my salt state trees with Vagrant, so I need to expose the `salt-formulae`
 
 ### Clone the repo
 
-    git clone git@github.com:mafrosis/salt-formulae.git /Users/mafro/Development/salt-formulae
+    git clone git@github.com:mafrosis/salt-formulae.git ~/Development/salt-formulae
 
 https://github.com/mafrosis/dotfiles/blob/mousetrap/salty-vagrant/Vagrantfile#L17
 
 ### Share with Vagrant
 
-    config.vm.synced_folder "/Users/mafro/Development/salt-formulae", "/srv/salt-formulae"
+    config.vm.synced_folder "~/Development/salt-formulae", "/srv/salt-formulae"
 
 https://github.com/mafrosis/dotfiles/blob/mousetrap/salty-vagrant/salt-minion.conf#L12
 
