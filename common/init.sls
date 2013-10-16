@@ -29,6 +29,9 @@ required-packages:
       - python-psutil
       - python-pip
       - python-software-properties
+      {% if grains['os'] == 'Ubuntu' %}
+      - language-pack-en
+      {% endif %}
     - require:
       - file: apt-no-recommends
 
