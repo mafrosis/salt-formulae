@@ -40,3 +40,8 @@ One option is to manually create a state such as this `salt-formulae` one below:
 
 Unfortunately the first call to highstate will fail with this state since all the states at salt-formulae are missing.
 The second call will be successful.
+
+And worse than that, if there are errors in your `salt-formulae` states, you'll need to clear the cloned repo before
+starting again..
+
+    $ rm -rf /srv/salt-formulae
