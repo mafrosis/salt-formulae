@@ -24,6 +24,7 @@ required-packages:
   pkg.latest:
     - names:
       - ntp
+      - man-db
       - debconf-utils
       - swig
       - python-psutil
