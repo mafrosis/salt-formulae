@@ -1,8 +1,6 @@
 include:
   - apt
-  {% if grains['env'] == 'vmware' %}
   - vmware-guest-tools
-  {% endif %}
 
 {% if grains['oscodename'] == "wheezy" %}
 wheezy-backports-pkgrepo:
