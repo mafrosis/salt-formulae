@@ -17,12 +17,14 @@ dev_packages:
 # install some extra packages
 {% for package_name in pillar.get('extras', []) %}
   {% if package_name == "vim" and grains['os'] == "Debian" %}
-  {% set package_name = "vim-nox" %}
+  {% set package = "vim-nox" %}
+  {% else %}
+  {% set package = package_name %}
   {% endif %}
 
 extra_{{ package_name }}:
   pkg.latest:
-    - name: {{ package_name }}
+    - name: {{ package }}
 {% endfor %}
 
 # set the default shell
