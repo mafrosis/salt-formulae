@@ -49,6 +49,7 @@ dotfiles:
     - submodules: true
     - require:
       - pkg: git
+      - ssh_known_hosts: github_known_hosts
       {% if pillar.get('github_key_path', False) %}
       - file: github.pky
       {% endif %}
