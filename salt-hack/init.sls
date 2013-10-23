@@ -1,8 +1,4 @@
-{% if grains['osrelease'].startswith("13") or grains['os'] == "Debian" %}
-  {% set install_path = "/usr/lib/python2.7/dist-packages" %}
-{% else %}
-  {% set install_path = "/usr/lib/pymodules/python2.7" %}
-{% endif %}
+{% for install_path in ("/usr/lib/python2.7/dist-packages", "/usr/lib/pymodules/python2.7") %}
 
 {% if grains['saltversion'].startswith("0.16") %}
 
@@ -41,7 +37,7 @@
     - source: salt://salt-hack/git.state.py
 
 
-salt-hack-restart:
+{{ install_path }}-salt-hack-restart:
   cmd.run:
     - name: service salt-minion restart
     - watch:
@@ -52,3 +48,5 @@ salt-hack-restart:
     - order: 1
 
 {% endif %}
+
+{% endfor %}
