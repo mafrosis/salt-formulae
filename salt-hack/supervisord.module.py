@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 '''
 Provide the service module for system supervisord or supervisord in a
 virtualenv
@@ -52,6 +51,18 @@ def _get_return(ret):
         return ''
 
 
+def _is_group(name, user, conf_file, bin_env):
+    all_processes = __salt__['supervisord.status'](
+        user=user,
+        conf_file=conf_file,
+        bin_env=bin_env
+    )
+    for proc in all_processes:
+        if ':' in proc and proc.startswith(name):
+            return True
+    return False
+
+
 def start(name='all', user=None, conf_file=None, bin_env=None):
     '''
     Start the named service.
@@ -72,6 +83,8 @@ def start(name='all', user=None, conf_file=None, bin_env=None):
         salt '*' supervisord.start <service>
         salt '*' supervisord.start <group>:
     '''
+    if not name.endswith(':') and _is_group(name, user, conf_file, bin_env):
+        name = "{0}:".format(name)
     ret = __salt__['cmd.run_all'](
         _ctl_cmd('start', name, conf_file, bin_env), runas=user
     )
@@ -98,6 +111,8 @@ def restart(name='all', user=None, conf_file=None, bin_env=None):
         salt '*' supervisord.restart <service>
         salt '*' supervisord.restart <group>:
     '''
+    if not name.endswith(':') and _is_group(name, user, conf_file, bin_env):
+        name = "{0}:".format(name)
     ret = __salt__['cmd.run_all'](
         _ctl_cmd('restart', name, conf_file, bin_env), runas=user
     )
@@ -124,6 +139,8 @@ def stop(name='all', user=None, conf_file=None, bin_env=None):
         salt '*' supervisord.stop <service>
         salt '*' supervisord.stop <group>:
     '''
+    if not name.endswith(':') and _is_group(name, user, conf_file, bin_env):
+        name = "{0}:".format(name)
     ret = __salt__['cmd.run_all'](
         _ctl_cmd('stop', name, conf_file, bin_env), runas=user
     )
