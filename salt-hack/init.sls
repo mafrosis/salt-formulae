@@ -1,6 +1,20 @@
 {% for install_path in ("/usr/lib/python2.7/dist-packages", "/usr/lib/pymodules/python2.7") %}
 
-{% if grains['saltversion'].startswith("0.16") %}
+{% if grains['saltversion'].startswith("0.17") %}
+
+# 2013-10-23 port in APT module so Riak installs
+{{ install_path }}/salt/modules/apt.py:
+  file.managed:
+    - source: salt://salt-hack/apt.module.0-17-1.py
+
+{{ install_path }}-salt-hack-restart:
+  cmd.run:
+    - name: service salt-minion restart
+    - watch:
+      - file: {{ install_path }}/salt/modules/apt.py
+    - order: 1
+
+{% elif grains['saltversion'].startswith("0.16") %}
 
 # 2013-08-07 HACK to include pip --pre flag
 {{ install_path }}/salt/states/pip.py:
