@@ -11,6 +11,7 @@ create-app-user:
     - home: /home/{{ app_user }}
     - shell: /bin/bash
     - gid_from_name: true
+    - remove_groups: false
     - require:
       - group: {{ app_user }}
     - order: first
