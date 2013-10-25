@@ -16,8 +16,6 @@ supervisor-config:
     - template: jinja
     - context:
         socket_mode: 0700
-    - requires:
-      - file: supervisor-config-dir
 
 supervisor-log-dir:
   file.directory:
