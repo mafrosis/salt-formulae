@@ -17,8 +17,7 @@ git:
     {% if grains['oscodename'] == "wheezy" %}
     - fromrepo: wheezy-backports
     {% endif %}
-    - requires:
-      - pkgrepo: wheezy-backports-pkgrepo
+    - order: 1
 
 required-packages:
   pkg.latest:
