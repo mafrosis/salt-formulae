@@ -26,7 +26,6 @@ required-packages:
       - man-db
       - debconf-utils
       - swig
-      - python-psutil
       - python-pip
       - python-software-properties
       {% if grains['os'] == 'Ubuntu' %}
