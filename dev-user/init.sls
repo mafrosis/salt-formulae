@@ -1,3 +1,5 @@
+{% set shell = pillar.get('shell', 'bash') %}
+
 include:
   - common
   - ssh
@@ -28,17 +30,17 @@ extra_{{ package_name }}:
 {% endfor %}
 
 # set the default shell
-shell-{{ pillar['shell'] }}:
-  pkg.latest:
-    - name: {{ pillar['shell'] }}
+shell-{{ shell }}:
+  pkg.installed:
+    - name: {{ shell }}
 
 modify-login-user:
   user.present:
     - name: {{ pillar['login_user'] }}
-    - shell: /bin/{{ pillar['shell'] }}
-    - unless: getent passwd $LOGNAME | grep {{ pillar['shell'] }}
+    - shell: /bin/{{ shell }}
+    - unless: getent passwd $LOGNAME | grep {{ shell }}
     - require:
-      - pkg: shell-{{ pillar['shell'] }}
+      - pkg: shell-{{ shell }}
 
 # grab the user's dotfiles
 dotfiles:
