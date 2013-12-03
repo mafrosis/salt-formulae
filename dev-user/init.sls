@@ -17,7 +17,7 @@ dev_packages:
       - htop
       - stow
 
-# install some extra packages
+# install extra packages from apt
 {% for package_name in pillar.get('extras', []) %}
   {% if package_name == "vim" and grains['os'] == "Debian" %}
   {% set package = "vim-nox" %}
@@ -28,6 +28,13 @@ dev_packages:
 extra_{{ package_name }}:
   pkg.latest:
     - name: {{ package }}
+{% endfor %}
+
+# install extra packages from pip
+{% for package_name in pillar.get('pip', []) %}
+extra_{{ package_name }}:
+  pip.installed:
+    - name: {{ package_name }}
 {% endfor %}
 
 # set the default shell
@@ -88,6 +95,11 @@ dotfiles-install-zsh:
     - require:
       - git: dotfiles
       - pkg: dev_packages
+
+/home/{{ pillar['login_user'] }}/.zsh_history:
+  file.managed:
+    - user: {{ pillar['login_user'] }}
+    - group: {{ pillar['login_user'] }}
 {% endif %}
 
 {% if 'git' in pillar.get('extras', []) %}
