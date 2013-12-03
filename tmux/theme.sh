@@ -38,6 +38,9 @@ if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 		{% if celeryd %}
 		"celeryd 52 255" \
 		{% endif %}
+		{% for seg in custom_segments %}
+		"{{ seg }} 237 167 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
+		{% endfor %}
 		{% if weather %}
 		"weather 37 255" \
 		{% endif %}

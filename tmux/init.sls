@@ -57,6 +57,7 @@ tmux-powerline-theme:
         gunicorn: false
         celeryd: false
         weather: {{ pillar.get('yahoo_weather_location', false) }}
+        custom_segments: []
     - require:
       - git: tmux-powerline-install
 
