@@ -53,6 +53,7 @@ tmux-powerline-theme:
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
     - defaults:
+        in_cloud: false
         gunicorn: false
         celeryd: false
         weather: {{ pillar.get('yahoo_weather_location', false) }}

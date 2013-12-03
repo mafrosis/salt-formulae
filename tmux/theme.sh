@@ -26,7 +26,11 @@ fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+		{% if in_cloud %}
+		"wan_ip 24 255" \
+		{% else %}
 		"lan_ip 24 255" \
+		{% endif %}
 		"load 237 167" \
 		{% if gunicorn %}
 		"gunicorn 22 255" \
