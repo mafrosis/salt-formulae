@@ -26,6 +26,7 @@ fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+		"hostname 33 0" \
 		{% if in_cloud %}
 		"wan_ip 24 255" \
 		{% else %}
