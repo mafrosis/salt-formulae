@@ -3,6 +3,7 @@
 include:
   - common
   - ssh
+  - sudo
   {% if 'tmux' in pillar.get('extras', []) %}
   - tmux
   {% endif %}
