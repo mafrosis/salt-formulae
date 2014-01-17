@@ -41,14 +41,14 @@ esky:
 
 pip-pip:
   pip.installed:
-    - name: pip
+    - name: pip==1.4
     - upgrade: true
     - require:
       - pkg: required-packages
 
-pip-distribute:
+pip-setuptools:
   pip.installed:
-    - name: distribute
+    - name: setuptools
     - upgrade: true
     - require:
       - pkg: required-packages

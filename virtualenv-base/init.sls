@@ -24,7 +24,7 @@ virtualenv-init:
   virtualenv.managed:
     - name: /home/{{ app_user }}/.virtualenvs/{{ app_name }}
     - user: {{ app_user }}
-    - distribute: true
+    - setuptools: true
     - require:
       - pip: virtualenvwrapper
       - pkg: pip-dependencies
@@ -32,7 +32,7 @@ virtualenv-init:
 
 virtualenv-init-pip:
   pip.installed:
-    - name: pip
+    - name: pip==1.4
     - upgrade: true
     - ignore_installed: true
     - user: {{ app_user }}
@@ -40,9 +40,9 @@ virtualenv-init-pip:
     - require:
       - virtualenv: virtualenv-init
 
-virtualenv-init-distribute:
+virtualenv-init-setuptools:
   pip.installed:
-    - name: distribute
+    - name: setuptools
     - upgrade: true
     - ignore_installed: true
     - user: {{ app_user }}
