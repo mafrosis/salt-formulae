@@ -2,7 +2,7 @@
 
 include:
   - common
-  - ssh
+  - github
   - sudo
   {% if 'tmux' in pillar.get('extras', []) %}
   - tmux

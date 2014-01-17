@@ -10,7 +10,7 @@ ssh-home-dir:
 ssh-config:
   file.managed:
     - name: /home/{{ ssh_user }}/.ssh/config
-    - source: salt://ssh/ssh_config
+    - contents: "Host github.com\n\tIdentityFile ~/.ssh/github.{{ grains['host'] }}.pky\n"
     - user: {{ ssh_user }}
     - group: {{ ssh_user }}
     - mode: 600
@@ -30,7 +30,7 @@ github_known_hosts:
 github.pky:
   file.managed:
     - source: salt://{{ pillar['github_key_path'] }}
-    - name: /home/{{ ssh_user }}/.ssh/github.pky
+    - name: /home/{{ ssh_user }}/.ssh/github.{{ grains['host'] }}.pky
     - user: {{ ssh_user }}
     - group: {{ ssh_user }}
     - mode: 600

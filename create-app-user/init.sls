@@ -1,5 +1,5 @@
 include:
-  - ssh
+  - github
 
 {% set app_user = pillar.get('app_user', pillar['login_user']) %}
 
