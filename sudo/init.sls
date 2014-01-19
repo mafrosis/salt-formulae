@@ -1,3 +1,6 @@
+sudo:
+  pkg.installed
+
 {% if grains['os'] == "Debian" %}
 /etc/sudoers.local:
   file.managed:
