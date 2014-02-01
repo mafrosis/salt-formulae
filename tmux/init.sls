@@ -53,6 +53,7 @@ tmux-powerline-theme:
   file.managed:
     - name: /home/{{ pillar['login_user'] }}/tmux-powerline/themes/{{ theme_name }}.sh
     - source: salt://tmux/theme.sh
+    - replace: false
     - template: jinja
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
