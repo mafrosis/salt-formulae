@@ -2,13 +2,23 @@ sudo:
   pkg.installed
 
 {% if grains['os'] == "Debian" and pillar.get('login_user', False) %}
-/etc/sudoers.local:
-  file.managed:
-    - contents: "Defaults env_reset\nDefaults env_keep += \"HOME\"\n"
 
-/etc/sudoers:
+{% if pillar['login_user'] == "vagrant" %}
+
+/etc/sudoers.d/vagrant:
   file.append:
-    - text: "{{ pillar['login_user'] }}\tALL=(ALL:ALL) ALL\n#include /etc/sudoers.local"
+    - text: "Defaults env_reset\nDefaults env_keep += \"HOME\""
     - require:
-      - file: /etc/sudoers.local
+      - pkg: sudo
+
+{% else %}
+
+/etc/sudoers.d/{{ pillar['login_user'] }}:
+  file.managed:
+    - contents: "Defaults env_reset\nDefaults env_keep += \"HOME\"\n{{ pillar['login_user'] }}\tALL=(ALL:ALL) ALL"
+    - require:
+      - pkg: sudo
+
+{% endif %}
+
 {% endif %}
