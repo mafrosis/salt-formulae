@@ -1,5 +1,15 @@
 #! /bin/bash
-#
+
+### BEGIN INIT INFO
+# Provides:          vmware-guest-tools
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: vmware-guest-tools
+# Description:       vmware-guest-tools kernel patch
+### END INIT INFO
+
 # Liberally adapted from http://vmadmin.nt.com.au/?p=52
 # All credit to the original author
 #
