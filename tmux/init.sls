@@ -7,8 +7,8 @@
 
 # TODO support no .tmux.conf in dotfiles; install a default
 
-# tmux-powerline theme for this project_name (or generic, if not a project deployment)
-{% set theme_name = pillar.get('project_name', pillar['login_user']) %}
+# tmux-powerline theme for this deployment (or user, if a dotfiles install)
+{% set theme_name = pillar.get('app_name', pillar['login_user']) %}
 
 include:
   - common
