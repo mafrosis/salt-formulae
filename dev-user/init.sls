@@ -37,6 +37,7 @@ extra_{{ package_name }}:
     - name: {{ package_name }}
 {% endfor %}
 
+
 # set the default shell
 shell-{{ shell }}:
   pkg.installed:
@@ -49,6 +50,23 @@ modify-login-user:
     - unless: getent passwd $LOGNAME | grep {{ shell }}
     - require:
       - pkg: shell-{{ shell }}
+
+
+{% if grains['oscodename'] == "wheezy" %}
+wheezy-backports-pkgrepo:
+  pkgrepo.managed:
+    - humanname: Wheezy Backports
+    - name: deb http://{{ pillar.get('deb_mirror_prefix', 'ftp.au') }}.debian.org/debian wheezy-backports main
+    - file: /etc/apt/sources.list.d/wheezy-backports.list
+    - require_in:
+      - pkg: git
+
+extend:
+  git:
+    pkg.latest:
+      - fromrepo: wheezy-backports
+{% endif %}
+
 
 # grab the user's dotfiles
 dotfiles:
