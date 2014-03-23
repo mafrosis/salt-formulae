@@ -1,5 +1,6 @@
 include:
   - apt
+  - common
   - create-app-user
 
 {% set app_user = pillar.get('app_user', pillar['login_user']) %}
@@ -14,6 +15,7 @@ pip-dependencies:
     - require:
       - file: apt-no-recommends
       - pkg: required-packages
+      - pip: pip-pip
 
 virtualenvwrapper:
   pip.installed:
