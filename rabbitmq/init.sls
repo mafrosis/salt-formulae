@@ -15,6 +15,10 @@ set-hostname:
       - file: /etc/hostname
       - file: /etc/hosts
 
+rabbitmq-python-apt:
+  pkg.installed:
+    - name: python-apt
+
 rabbitmq-pkgrepo:
   pkgrepo.managed:
     - humanname: RabbitMQ PPA
@@ -23,6 +27,8 @@ rabbitmq-pkgrepo:
     - key_url: http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
     - require_in:
       - pkg: rabbitmq-server
+    - require:
+      - pkg: rabbitmq-python-apt
 
 rabbitmq-server:
   pkg.installed:
