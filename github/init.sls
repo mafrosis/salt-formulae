@@ -26,7 +26,20 @@ github_known_hosts:
     - require:
       - file: /home/{{ ssh_user }}/.ssh
 
-{% if pillar.get('github_key_path', False) %}
+{% if pillar.get('github_key', False) %}
+github.pky:
+  file.managed:
+    - contents_pillar: github_key
+    - name: /home/{{ ssh_user }}/.ssh/github.{{ grains['host'] }}.pky
+    - user: {{ ssh_user }}
+    - group: {{ ssh_user }}
+    - mode: 600
+    - require:
+      - file: /home/{{ ssh_user }}/.ssh/config
+      - ssh_known_hosts: github_known_hosts
+    - order: first
+
+{% elif pillar.get('github_key_path', False) %}
 github.pky:
   file.managed:
     - source: salt://{{ pillar['github_key_path'] }}
@@ -38,4 +51,5 @@ github.pky:
       - file: /home/{{ ssh_user }}/.ssh/config
       - ssh_known_hosts: github_known_hosts
     - order: first
+
 {% endif %}
