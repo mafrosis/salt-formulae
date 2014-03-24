@@ -1,19 +1,5 @@
-{% set hostname = pillar.get("hostname", pillar.get("app_name", "localhost")) %}
-
-/etc/hostname:
-  file.managed:
-    - contents: {{ hostname }}
-
-/etc/hosts:
-  file.append:
-    - text: 127.0.0.1 {{ hostname }}
-
-set-hostname:
-  cmd.run:
-    - name: hostname -F /etc/hostname
-    - require:
-      - file: /etc/hostname
-      - file: /etc/hosts
+include:
+  - hostname
 
 rabbitmq-python-apt:
   pkg.installed:
