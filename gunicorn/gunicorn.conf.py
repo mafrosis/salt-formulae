@@ -1,8 +1,9 @@
+# vim: set ft=jinja:
 #################################################
 # Gunicorn config for ogreserver
 #################################################
 
-bind = '{{ bind_hostname }}:{{ gunicorn_port }}'
+bind = '{{ gunicorn_host }}:{{ gunicorn_port }}'
 {% if 'env' in grains and grains['env'] == 'dev' %}
 workers = 1
 {% else %}

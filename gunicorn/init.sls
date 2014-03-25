@@ -11,7 +11,7 @@ gunicorn-config:
     - mode: 644
     - defaults:
         app_name: {{ pillar['app_name'] }}
-        bind_hostname: 127.0.0.1
+        gunicorn_host: 127.0.0.1
         gunicorn_port: 8001
         worker_class: sync
         timeout: 30
