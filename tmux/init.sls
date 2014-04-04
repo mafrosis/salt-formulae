@@ -48,12 +48,11 @@ tmux-powerline-install:
       - file: github.pky
       {% endif %}
 
-# create tmux-powerline theme
+# create tmux-powerline theme, including custom defined segments
 tmux-powerline-theme:
   file.managed:
     - name: /home/{{ pillar['login_user'] }}/tmux-powerline/themes/{{ theme_name }}.sh
     - source: salt://tmux/theme.sh
-    - replace: false
     - template: jinja
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
@@ -62,7 +61,7 @@ tmux-powerline-theme:
         gunicorn: false
         celeryd: false
         weather: {{ pillar.get('yahoo_weather_location', false) }}
-        custom_segments: []
+        custom_segments: {{ pillar.get('custom_segments', {}) }}
     - require:
       - git: tmux-powerline-install
 
@@ -100,7 +99,7 @@ tmux-powerlinerc:
     - context:
         theme: {{ theme_name }}
         patched_font_in_use: {{ pillar.get('tmux_patched_font', 'false') }}
-        yahoo_weather_location: {{ pillar.get('yahoo_weather_location', '') }}
+        yahoo_weather_location: {{ pillar.get('yahoo_weather_location', false) }}
     - default:
         theme: minimal
     - require:

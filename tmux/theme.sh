@@ -32,16 +32,16 @@ if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 		{% else %}
 		"lan_ip 24 255" \
 		{% endif %}
-		"load 237 167" \
 		{% if gunicorn %}
 		"gunicorn 22 255" \
 		{% endif %}
 		{% if celeryd %}
 		"celeryd 52 255" \
 		{% endif %}
-		{% for seg in custom_segments %}
-		"{{ seg }} 237 167 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
+		{% for segment_name, colours in custom_segments.iteritems() %}
+		"{{ segment_name }} {{ colours }}" \
 		{% endfor %}
+		"load 237 167" \
 		{% if weather %}
 		"weather 37 255" \
 		{% endif %}

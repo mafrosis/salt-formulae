@@ -6,6 +6,7 @@
 	export TMUX_POWERLINE_THEME="{{ theme }}"
 # }
 
+{% if yahoo_weather_location %}
 # weather.sh {
         # The data provider to use. Currently only "yahoo" is supported.
         export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER="yahoo"
@@ -22,3 +23,4 @@
         # 3. Copy the last numbers in that URL. e.g. "http://weather.yahoo.com/united-states/california/newport-beach-12796587/" has the numbers "12796587"
         export TMUX_POWERLINE_SEG_WEATHER_LOCATION="{{ yahoo_weather_location }}"
 # }
+{% endif %}
