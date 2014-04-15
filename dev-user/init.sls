@@ -104,7 +104,7 @@ viminfo-touch:
     - mode: 644
 {% endif %}
 
-{% if 'zsh' in pillar.get('extras', []) %}
+{% if shell == 'zsh' %}
 dotfiles-install-zsh:
   cmd.run:
     - name: ./install.sh -f zsh &> /dev/null
