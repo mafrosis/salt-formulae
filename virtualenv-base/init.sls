@@ -29,7 +29,6 @@ virtualenv-init:
     - setuptools: true
     - require:
       - pip: virtualenvwrapper
-      - pkg: pip-dependencies
       - user: create-app-user
 
 virtualenv-init-pip:
