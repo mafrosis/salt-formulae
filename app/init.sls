@@ -27,4 +27,6 @@ git-app-add-upstream:
     - cwd: /srv/{{ pillar['app_name'] }}
     - user: {{ pillar['app_user'] }}
     - group: {{ pillar['app_user'] }}
+    - require:
+      - git: git-clone-app
 {% endif %}

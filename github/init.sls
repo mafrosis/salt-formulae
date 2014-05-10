@@ -16,7 +16,7 @@ ssh-config:
     - mode: 600
     - replace: false
     - require:
-      - file: /home/{{ ssh_user }}/.ssh
+      - file: ssh-home-dir
 
 github_known_hosts:
   ssh_known_hosts.present:
@@ -24,7 +24,7 @@ github_known_hosts:
     - user: {{ ssh_user }}
     - fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
     - require:
-      - file: /home/{{ ssh_user }}/.ssh
+      - file: ssh-home-dir
 
 {% if pillar.get('github_key', False) %}
 github.pky:
@@ -35,7 +35,7 @@ github.pky:
     - group: {{ ssh_user }}
     - mode: 600
     - require:
-      - file: /home/{{ ssh_user }}/.ssh/config
+      - file: ssh-config
       - ssh_known_hosts: github_known_hosts
     - order: first
 
@@ -48,7 +48,7 @@ github.pky:
     - group: {{ ssh_user }}
     - mode: 600
     - require:
-      - file: /home/{{ ssh_user }}/.ssh/config
+      - file: ssh-config
       - ssh_known_hosts: github_known_hosts
     - order: first
 
