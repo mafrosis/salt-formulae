@@ -10,5 +10,10 @@ run_segment() {
 	# print the current {{ component_name }} pid
 	pgrep -d "," -P $(cat /tmp/{{ component_name }}-{{ pillar['app_name'] }}.pid)
 
+	if [ $? == 1 ]; then
+		echo "DEAD"
+		return 0
+	fi
+
 	return 0
 }
