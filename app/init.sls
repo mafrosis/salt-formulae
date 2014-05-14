@@ -12,6 +12,9 @@ app-directory:
 git-clone-app:
   git.latest:
     - name: git@github.com:{{ pillar['app_repo'] }}.git
+    {% if pillar.get('app_repo_rev', false) %}
+    - rev: {{ pillar['app_repo_rev'] }}
+    {% endif %}
     - target: /srv/{{ pillar['app_name'] }}
     - runas: {{ pillar['app_user'] }}
     - require:
