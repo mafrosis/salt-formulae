@@ -1,8 +1,8 @@
 #################################################
 # Nginx proxy config
 #
-# Symlink to:
-#     /etc/nginx/conf.d/
+# Installed to:
+#     /etc/nginx/proxy_params
 # 
 #################################################
 

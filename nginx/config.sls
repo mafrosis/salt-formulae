@@ -5,8 +5,6 @@ extend:
   nginx:
     service.running:
       - watch:
-        - file: /etc/nginx/conf.d/http.conf
-        - file: /etc/nginx/conf.d/proxy.conf
         - file: /etc/nginx/sites-available/{{ pillar['app_name'] }}.conf
 
 
