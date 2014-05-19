@@ -47,6 +47,7 @@ modify-login-user:
   user.present:
     - name: {{ pillar['login_user'] }}
     - shell: /bin/{{ shell }}
+    - remove_groups: false
     - unless: getent passwd $LOGNAME | grep {{ shell }}
     - require:
       - pkg: shell-{{ shell }}
