@@ -11,7 +11,6 @@ pip-dependencies:
     - names:
       - python-dev
       - build-essential
-      - python-virtualenv
     - require:
       - file: apt-no-recommends
       - pkg: required-packages
