@@ -26,6 +26,8 @@ pidfile = '/tmp/gunicorn-{{ app_name }}.pid'
 errorlog = '-'
 {% if 'env' in grains and grains['env'] == 'dev' %}
 loglevel = 'debug'
+debug = True
 {% else %}
 loglevel = '{{ loglevel }}'
+debug = False
 {% endif %}
