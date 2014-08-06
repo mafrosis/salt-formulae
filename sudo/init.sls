@@ -15,7 +15,10 @@ sudo:
 
 /etc/sudoers.d/{{ pillar['login_user'] }}:
   file.managed:
-    - contents: "Defaults env_reset\nDefaults env_keep += \"HOME\"\n{{ pillar['login_user'] }}\tALL=(ALL)\tNOPASSWD:ALL\n"
+    - contents: |
+        Defaults env_reset
+        Defaults env_keep += "HOME"
+        {{ pillar['login_user'] }}  ALL=(ALL)  NOPASSWD:ALL
     - mode: 0440
     - require:
       - pkg: sudo

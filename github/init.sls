@@ -10,7 +10,9 @@ ssh-home-dir:
 ssh-config:
   file.managed:
     - name: /home/{{ ssh_user }}/.ssh/config
-    - contents: "Host github.com\n\tIdentityFile ~/.ssh/github.{{ grains['host'] }}.pky\n"
+    - contents: |
+        Host github.com
+            IdentityFile ~/.ssh/github.{{ grains['host'] }}.pky
     - user: {{ ssh_user }}
     - group: {{ ssh_user }}
     - mode: 600

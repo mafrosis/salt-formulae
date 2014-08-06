@@ -5,7 +5,9 @@ locale-gen:
 
 /etc/default/locale:
   file.managed:
-    - contents: "LANG=\"{{ pillar['locale'] }}.UTF-8\"\nLANGUAGE=\"{{ pillar['locale'] }}:en\"\n"
+    - contents: |
+        LANG="{{ pillar['locale'] }}.UTF-8"
+        LANGUAGE="{{ pillar['locale'] }}:en"
 {% endif %}
 
 {% if pillar.get('timezone', False) %}
