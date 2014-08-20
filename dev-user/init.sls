@@ -2,6 +2,9 @@
 
 include:
   - common
+  {% if grains['os'] == "Debian" %}
+  - debian-backports
+  {% endif %}
   - github
   - sudo
   {% if 'tmux' in pillar.get('extras', []) %}
@@ -53,19 +56,13 @@ modify-login-user:
       - pkg: shell-{{ shell }}
 
 
-{% if grains['oscodename'] == "wheezy" %}
-wheezy-backports-pkgrepo:
-  pkgrepo.managed:
-    - humanname: Wheezy Backports
-    - name: deb http://{{ pillar.get('deb_mirror_prefix', 'ftp.au') }}.debian.org/debian wheezy-backports main
-    - file: /etc/apt/sources.list.d/wheezy-backports.list
-    - require_in:
-      - pkg: git
-
+{% if grains['os'] == "Debian" %}
 extend:
   git:
     pkg.latest:
-      - fromrepo: wheezy-backports
+      - fromrepo: {{ grains['oscodename'] }}-backports
+      - require:
+        - pkgrepo: backports-pkgrepo
 {% endif %}
 
 
