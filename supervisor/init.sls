@@ -1,7 +1,13 @@
+supervisor-dependencies:
+  pkg.installed:
+    - name: python-pip
+
 supervisor-install:
   pip.installed:
     - name: supervisor
     - update: true
+    - require:
+      - pkg: supervisor-dependencies
 
 supervisor-config-dir:
   file.directory:
