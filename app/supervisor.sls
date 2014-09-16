@@ -10,6 +10,7 @@ include:
     - defaults:
         purge: false
         app_user: {{ pillar['app_user'] }}
+        loglevel: warning
     - require:
       - user: {{ pillar['app_user'] }}
     - require_in:
