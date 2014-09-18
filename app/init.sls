@@ -6,7 +6,7 @@ include:
 
 app-directory:
   file.directory:
-    - name: /srv/{{ app_name }}
+    - name: /srv/{{ pillar.get('app_directory_name', app_name) }}
     - user: {{ app_user }}
     - group: {{ app_user }}
     - makedirs: true
@@ -17,7 +17,7 @@ git-clone-app:
     {% if pillar.get('app_repo_rev', false) %}
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
-    - target: /srv/{{ app_name }}
+    - target: /srv/{{ pillar.get('app_directory_name', app_name) }}
     - runas: {{ app_user }}
     - require:
       - pkg: git
