@@ -1,11 +1,12 @@
 include:
   - supervisor
 
+{{ set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) }}
 
 # app config for supervisor
-/etc/supervisor/conf.d/{{ pillar['app_name'] }}.conf:
+/etc/supervisor/conf.d/{{ supervisor_name }}.conf:
   file.managed:
-    - source: salt://{{ pillar['app_name'] }}/supervisord.conf
+    - source: salt://{{ supervisor_name }}/supervisord.conf
     - template: jinja
     - defaults:
         purge: false
@@ -17,11 +18,11 @@ include:
       - service: supervisor
 
 # app supervisor process
-{{ pillar['app_name'] }}-supervisor-service:
+{{ supervisor_name }}-supervisor-service:
   supervisord.running:
-    - name: "{{ pillar['app_name'] }}:"
+    - name: "{{ supervisor_name }}:"
     - update: true
     - require:
       - service: supervisor
     - watch:
-      - file: /etc/supervisor/conf.d/{{ pillar['app_name'] }}.conf
+      - file: /etc/supervisor/conf.d/{{ supervisor_name }}.conf
