@@ -1,10 +1,11 @@
 include:
   - github
 
+{% set app_name = pillar.get('app_name', 'app_name') %}
 
 app-directory:
   file.directory:
-    - name: /srv/{{ pillar['app_name'] }}
+    - name: /srv/{{ app_name }}
     - user: {{ pillar['app_user'] }}
     - group: {{ pillar['app_user'] }}
     - makedirs: true
@@ -15,7 +16,7 @@ git-clone-app:
     {% if pillar.get('app_repo_rev', false) %}
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
-    - target: /srv/{{ pillar['app_name'] }}
+    - target: /srv/{{ app_name }}
     - runas: {{ pillar['app_user'] }}
     - require:
       - pkg: git
@@ -27,7 +28,7 @@ git-app-add-upstream:
   cmd.run:
     - name: git remote add upstream git@github.com:{{ pillar['upstream_repo'] }}
     - unless: git remote | grep upstream
-    - cwd: /srv/{{ pillar['app_name'] }}
+    - cwd: /srv/{{ app_name }}
     - user: {{ pillar['app_user'] }}
     - group: {{ pillar['app_user'] }}
     - require:

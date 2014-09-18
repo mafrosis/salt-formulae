@@ -1,7 +1,7 @@
 include:
   - supervisor
 
-{{ set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) }}
+{% set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) %}
 
 # app config for supervisor
 /etc/supervisor/conf.d/{{ supervisor_name }}.conf:

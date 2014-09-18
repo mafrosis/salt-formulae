@@ -3,8 +3,8 @@ include:
   - common
   - create-app-user
 
+{% set app_name = pillar.get('app_name', 'venv') %}
 {% set app_user = pillar.get('app_user', pillar['login_user']) %}
-{% set app_name = pillar.get('app_name', 'should-be-overriden-in-template') %}
 
 pip-dependencies:
   pkg.latest:

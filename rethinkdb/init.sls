@@ -1,3 +1,5 @@
+{% set app_name = pillar.get('app_name', 'rethinkdb') %}
+
 # Debian currently uses the lucid package for Ubuntu
 {% if grains['os'] == "Debian" %}
 {% set repo = "lucid" %}
@@ -43,13 +45,13 @@ rethinkdb-chown-lib:
 
 rethinkdb-config:
   file.managed:
-    - name: /etc/rethinkdb/instances.d/{{ pillar['app_name'] }}.conf
+    - name: /etc/rethinkdb/instances.d/{{ app_name }}.conf
     - source: salt://rethinkdb/rethinkdb.instance.conf
     - template: jinja
     - user: rethinkdb
     - group: rethinkdb
     - defaults:
-        app_name: {{ pillar['app_name'] }}
+        app_name: {{ app_name }}
         data_directory: null
         production: true
         host: null

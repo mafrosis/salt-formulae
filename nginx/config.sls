@@ -1,14 +1,16 @@
 include:
   - nginx
 
+{% set app_name = pillar.get('app_name', 'app_logs') %}
+
 extend:
   nginx:
     service.running:
       - watch:
-        - file: /etc/nginx/sites-available/{{ pillar['app_name'] }}.conf
+        - file: /etc/nginx/sites-available/{{ app_name }}.conf
 
 
-/etc/nginx/sites-available/{{ pillar['app_name'] }}.conf:
+/etc/nginx/sites-available/{{ app_name }}.conf:
   file.managed:
     {% if pillar.get('gunicorn_host', false) %}
     - source: salt://nginx/gunicorn.tmpl.conf
@@ -20,7 +22,7 @@ extend:
         port: 80
         server_name: localhost
         root: /srv
-        app_name: {{ pillar['app_name'] }}
+        app_name: {{ app_name }}
         {% if pillar.get('gunicorn_host', false) %}
         gunicorn_host: {{ pillar['gunicorn_host'] }}
         gunicorn_port: {{ pillar['gunicorn_port'] }}
@@ -28,10 +30,10 @@ extend:
     - require:
       - pkg: nginx
 
-/etc/nginx/sites-enabled/{{ pillar['app_name'] }}.conf:
+/etc/nginx/sites-enabled/{{ app_name }}.conf:
   file.symlink:
-    - target: /etc/nginx/sites-available/{{ pillar['app_name'] }}.conf
+    - target: /etc/nginx/sites-available/{{ app_name }}.conf
     - require:
-      - file: /etc/nginx/sites-available/{{ pillar['app_name'] }}.conf
+      - file: /etc/nginx/sites-available/{{ app_name }}.conf
     - require_in:
       - service: nginx

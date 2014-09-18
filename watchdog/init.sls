@@ -3,7 +3,7 @@
 # https://pypi.python.org/pypi/watchdog
 #
 # Watchdog processes are daemonized in Supervisor and added to a process
-# group with the service they're watching
+# group called "watchdog:"
 #
 # A dictionary like this needs to be configured in pillar:
 #   watchdog:
@@ -18,6 +18,10 @@
 
 {% if 'watchdog' in pillar %}
 
+{% set app_name = pillar.get('app_name', 'app_name') %}
+{% set venv_name = pillar.get('virtualenv_name', pillar.get('app_name', 'venv')) %}
+{% set log_path = pillar.get('app_name', 'app_logs') %}
+
 watchdog-service:
   supervisord.running:
     - name: "watchdog:"
@@ -30,15 +34,16 @@ watchdog-service:
 watchdog:
   pip.installed:
     - user: {{ pillar['app_user'] }}
-    - bin_env: /home/{{ pillar['app_user'] }}/.virtualenvs/{{ pillar['app_name'] }}
+    - bin_env: /home/{{ pillar['app_user'] }}/.virtualenvs/{{ venv_name }}
 
 watchdog-supervisor-config:
   file.managed:
-    - name: /etc/supervisor/conf.d/watchdog.{{ pillar['app_name'] }}.conf
+    - name: /etc/supervisor/conf.d/watchdog.{{ app_name }}.conf
     - source: salt://watchdog/supervisord.conf
     - template: jinja
     - context:
-        app_name: {{ pillar['app_name'] }}
+        venv_name: {{ venv_name }}
+        log_path: {{ log_path }}
         app_user: {{ pillar['app_user'] }}
         watches: {{ pillar['watchdog'] }}
     - require:
