@@ -2,12 +2,13 @@ include:
   - github
 
 {% set app_name = pillar.get('app_name', 'app_name') %}
+{% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 
 app-directory:
   file.directory:
     - name: /srv/{{ app_name }}
-    - user: {{ pillar['app_user'] }}
-    - group: {{ pillar['app_user'] }}
+    - user: {{ app_user }}
+    - group: {{ app_user }}
     - makedirs: true
 
 git-clone-app:
@@ -17,7 +18,7 @@ git-clone-app:
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
     - target: /srv/{{ app_name }}
-    - runas: {{ pillar['app_user'] }}
+    - runas: {{ app_user }}
     - require:
       - pkg: git
       - file: github.pky
@@ -29,8 +30,8 @@ git-app-add-upstream:
     - name: git remote add upstream git@github.com:{{ pillar['upstream_repo'] }}
     - unless: git remote | grep upstream
     - cwd: /srv/{{ app_name }}
-    - user: {{ pillar['app_user'] }}
-    - group: {{ pillar['app_user'] }}
+    - user: {{ app_user }}
+    - group: {{ app_user }}
     - require:
       - git: git-clone-app
 {% endif %}

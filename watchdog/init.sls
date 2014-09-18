@@ -19,6 +19,7 @@
 {% if 'watchdog' in pillar %}
 
 {% set app_name = pillar.get('app_name', 'app_name') %}
+{% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 {% set venv_name = pillar.get('virtualenv_name', pillar.get('app_name', 'venv')) %}
 {% set log_path = pillar.get('app_name', 'app_logs') %}
 
@@ -33,8 +34,8 @@ watchdog-service:
 
 watchdog:
   pip.installed:
-    - user: {{ pillar['app_user'] }}
-    - bin_env: /home/{{ pillar['app_user'] }}/.virtualenvs/{{ venv_name }}
+    - user: {{ app_user }}
+    - bin_env: /home/{{ app_user }}/.virtualenvs/{{ venv_name }}
 
 watchdog-supervisor-config:
   file.managed:
@@ -44,7 +45,7 @@ watchdog-supervisor-config:
     - context:
         venv_name: {{ venv_name }}
         log_path: {{ log_path }}
-        app_user: {{ pillar['app_user'] }}
+        app_user: {{ app_user }}
         watches: {{ pillar['watchdog'] }}
     - require:
       - pip: watchdog

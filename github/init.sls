@@ -1,4 +1,4 @@
-{% set ssh_user = pillar.get('app_user', pillar['login_user']) %}
+{% set ssh_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 
 ssh-home-dir:
   file.directory:

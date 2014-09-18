@@ -1,4 +1,5 @@
 {% set app_name = pillar.get('app_name', 'app_logs') %}
+{% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 
 include:
   - create-app-user
@@ -6,8 +7,8 @@ include:
 app-log-directory:
   file.directory:
     - name: /var/log/{{ app_name }}
-    - user: {{ pillar['app_user'] }}
-    - group: {{ pillar['app_user'] }}
+    - user: {{ app_user }}
+    - group: {{ app_user }}
     - dir_mode: 755
     - file_mode: 600
     - recurse:
@@ -15,7 +16,7 @@ app-log-directory:
       - group
       - mode
     - require:
-      - user: {{ pillar['app_user'] }}
+      - user: {{ app_user }}
 
 app-logrotate-crontab:
   file.managed:
@@ -24,4 +25,4 @@ app-logrotate-crontab:
     - mode: 644
     - template: jinja
     - context:
-        owner: {{ pillar['app_user'] }}
+        owner: {{ app_user }}

@@ -2,6 +2,7 @@ include:
   - supervisor
 
 {% set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) %}
+{% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 
 # app config for supervisor
 /etc/supervisor/conf.d/{{ supervisor_name }}.conf:
@@ -10,10 +11,10 @@ include:
     - template: jinja
     - defaults:
         purge: false
-        app_user: {{ pillar['app_user'] }}
+        app_user: {{ app_user }}
         loglevel: warning
     - require:
-      - user: {{ pillar['app_user'] }}
+      - user: {{ app_user }}
     - require_in:
       - service: supervisor
 
