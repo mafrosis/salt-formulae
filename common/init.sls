@@ -15,7 +15,7 @@ required-packages:
       - swig
       - python-apt
       - python-pip
-      - python-software-properties
+      - software-properties-common
       {% if grains['os'] == 'Ubuntu' %}
       - language-pack-en
       {% endif %}
