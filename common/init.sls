@@ -9,6 +9,7 @@ git:
 required-packages:
   pkg.latest:
     - names:
+      - coreutils
       - ntp
       - man-db
       - debconf-utils
