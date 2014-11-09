@@ -1,16 +1,9 @@
 {% set app_name = pillar.get('app_name', 'rethinkdb') %}
 
-# Debian currently uses the lucid package for Ubuntu
-{% if grains['os'] == "Debian" %}
-{% set repo = "lucid" %}
-{% elif grains['os'] == "Ubuntu" %}
-{% set repo = grains['oscodename'] %}
-{% endif %}
-
 rethinkdb-pkgrepo:
   pkgrepo.managed:
     - humanname: RethinkDB PPA
-    - name: deb http://download.rethinkdb.com/apt {{ repo }} main
+    - name: deb http://download.rethinkdb.com/apt {{ grains['oscodename'] }} main
     - file: /etc/apt/sources.list.d/rethinkdb.list
     - key_url: http://download.rethinkdb.com/apt/pubkey.gpg
     - require_in:
@@ -21,7 +14,7 @@ rethinkdb:
     - createhome: false
     - gid_from_name: true
   pkg.installed:
-    - version: 1.13.3-0ubuntu1~{{ repo }}
+    - version: 1.15.1~0{{ grains['oscodename'] }}
 
 
 python-pip-rethinkdb:
