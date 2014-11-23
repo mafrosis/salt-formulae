@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# stash everything except what's staged
+git stash -q --keep-index
+
+# validate javascript
+INPUT_FILE="$(git diff-index --name-only --no-color --cached HEAD | awk '/.js$/ {print;}' | tr '\n' ' ')"
+
+if [[ ! -z "$INPUT_FILE" ]]; then
+	# compile using Google's Closure Compiler tool
+	# use JAR file if exists in /usr/local/lib, else use webservice
+	if [[ -f /usr/local/lib/compiler.jar ]]; then
+		ERRORS=$(java -jar /usr/local/lib/compiler.jar $INPUT_FILE 2>&1)
+	else
+		ERRORS=$(closure-compiler -o errors $INPUT_FILE)
+	fi
+
+	# store return code from validation
+	RET=$?
+
+	# print any errors reported
+	if [[ $RET -ne 0 ]]; then
+		echo "$ERRORS"
+		exit $RET
+	fi
+fi
+
+# return the working tree to its previous state
+git stash pop -q
+
+# exit with the return code validation
+exit $RET
