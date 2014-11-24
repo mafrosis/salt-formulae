@@ -10,8 +10,9 @@ extend:
         - file: /etc/nginx/sites-available/{{ app_name }}.conf
 
 
-/etc/nginx/sites-available/{{ app_name }}.conf:
+nginx-app-config:
   file.managed:
+    - name: /etc/nginx/sites-available/{{ app_name }}.conf
     {% if pillar.get('gunicorn_host', false) %}
     - source: salt://nginx/gunicorn.tmpl.conf
     {% else %}
