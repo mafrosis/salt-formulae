@@ -24,9 +24,13 @@ nginx-app-config:
         server_name: localhost
         root: /srv/{{ app_name }}
         app_name: {{ app_name }}
+        static_gzip: true
+        static_gzip_types: web
         {% if pillar.get('upstream_host', false) %}
         upstream_host: {{ pillar['upstream_host'] }}
         upstream_port: {{ pillar['upstream_port'] }}
+        upstream_gzip: false
+        upstream_gzip_types: ''
         {% endif %}
     - require:
       - pkg: nginx
