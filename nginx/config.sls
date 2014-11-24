@@ -13,8 +13,8 @@ extend:
 nginx-app-config:
   file.managed:
     - name: /etc/nginx/sites-available/{{ app_name }}.conf
-    {% if pillar.get('gunicorn_host', false) %}
-    - source: salt://nginx/gunicorn.tmpl.conf
+    {% if pillar.get('upstream_host', false) %}
+    - source: salt://nginx/upstream.tmpl.conf
     {% else %}
     - source: salt://nginx/simple.tmpl.conf
     {% endif %}
@@ -24,9 +24,9 @@ nginx-app-config:
         server_name: localhost
         root: /srv/{{ app_name }}
         app_name: {{ app_name }}
-        {% if pillar.get('gunicorn_host', false) %}
-        gunicorn_host: {{ pillar['gunicorn_host'] }}
-        gunicorn_port: {{ pillar['gunicorn_port'] }}
+        {% if pillar.get('upstream_host', false) %}
+        upstream_host: {{ pillar['upstream_host'] }}
+        upstream_port: {{ pillar['upstream_port'] }}
         {% endif %}
     - require:
       - pkg: nginx
