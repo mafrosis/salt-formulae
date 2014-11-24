@@ -21,7 +21,7 @@ extend:
     - defaults:
         port: 80
         server_name: localhost
-        root: /srv
+        root: /srv/{{ app_name }}
         app_name: {{ app_name }}
         {% if pillar.get('gunicorn_host', false) %}
         gunicorn_host: {{ pillar['gunicorn_host'] }}
