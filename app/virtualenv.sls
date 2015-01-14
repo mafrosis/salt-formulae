@@ -10,5 +10,5 @@ app-virtualenv:
     - name: /home/{{ app_user }}/.virtualenvs/{{ venv_name }}
     - user: {{ app_user }}
     - require:
-      - pip: virtualenv-init-setuptools
+      - virtualenv: virtualenv-init
       - git: git-clone-app

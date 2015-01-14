@@ -14,7 +14,6 @@ pip-dependencies:
     - require:
       - file: apt-no-recommends
       - pkg: required-packages
-      - pip: pip-pip
 
 virtualenvwrapper:
   pip.installed:
@@ -29,23 +28,3 @@ virtualenv-init:
     - require:
       - pip: virtualenvwrapper
       - user: create-app-user
-
-virtualenv-init-pip:
-  pip.installed:
-    - name: pip==1.4
-    - upgrade: true
-    - ignore_installed: true
-    - user: {{ app_user }}
-    - bin_env: /home/{{ app_user }}/.virtualenvs/{{ app_name }}
-    - require:
-      - virtualenv: virtualenv-init
-
-virtualenv-init-setuptools:
-  pip.installed:
-    - name: setuptools
-    - upgrade: true
-    - ignore_installed: true
-    - user: {{ app_user }}
-    - bin_env: /home/{{ app_user }}/.virtualenvs/{{ app_name }}
-    - require:
-      - pip: virtualenv-init-pip
