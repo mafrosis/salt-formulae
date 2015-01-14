@@ -14,5 +14,5 @@ nodejs-install:
 
 npm-install:
   cmd.run:
-    - name: curl --insecure https://www.npmjs.org/install.sh | sudo bash
+    - name: curl -L --insecure https://www.npmjs.com/install.sh | sudo bash
     - unless: which npm
