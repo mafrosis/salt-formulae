@@ -10,9 +10,21 @@ extend:
         - file: /etc/nginx/sites-available/{{ app_name }}.conf
 
 
-nginx-app-config:
+# support a HTTP, and a HTTPS config if configured
+{% if pillar.get('ssl', false) %}
+{% set ports = [80, 443] %}
+{% else %}
+{% set ports = [80] %}
+{% endif %}
+
+{% for port in ports %}
+nginx-app-config-{{ port }}:
   file.managed:
+    {% if port == 80 %}
     - name: /etc/nginx/sites-available/{{ app_name }}.conf
+    {% else %}
+    - name: /etc/nginx/sites-available/{{ app_name }}-{{ port }}.conf
+    {% endif %}
     {% if pillar.get('upstream_host', false) %}
     - source: salt://nginx/upstream.tmpl.conf
     {% else %}
@@ -20,7 +32,7 @@ nginx-app-config:
     {% endif %}
     - template: jinja
     - defaults:
-        port: 80
+        port: {{ port }}
         server_name: localhost
         root: /srv/{{ app_name }}
         app_name: {{ app_name }}
@@ -32,8 +44,12 @@ nginx-app-config:
         upstream_gzip: false
         upstream_gzip_types: ''
         {% endif %}
+        ssl: {{ pillar.get('ssl', false) }}
     - require:
       - pkg: nginx
+    - require_in:
+      - service: nginx
+{% endfor %}
 
 /etc/nginx/sites-enabled/{{ app_name }}.conf:
   file.symlink:
