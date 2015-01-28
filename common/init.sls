@@ -17,6 +17,7 @@ required-packages:
       - python-apt
       - python-pip
       - software-properties-common
+      - vim
       {% if grains['os'] == 'Ubuntu' %}
       - language-pack-en
       {% endif %}
