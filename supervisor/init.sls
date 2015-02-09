@@ -20,8 +20,8 @@ supervisor-config:
     - name: /etc/supervisord.conf
     - source: salt://supervisor/supervisord.deb.conf
     - template: jinja
-    - context:
-        socket_mode: 0700
+    - defaults:
+        socket_mode: "0300"
 
 supervisor-log-dir:
   file.directory:
