@@ -84,7 +84,7 @@ dotfiles:
 {% if 'vim' in pillar.get('extras', []) %}
 dotfiles-install-vim:
   cmd.run:
-    - name: ./install.sh -f vim &> /dev/null
+    - name: ./install.sh -f vim
     - unless: test -L /home/{{ pillar['login_user'] }}/.vimrc
     - cwd: /home/{{ pillar['login_user'] }}/dotfiles
     - user: {{ pillar['login_user'] }}
@@ -105,14 +105,14 @@ viminfo-touch:
 {% if shell == 'zsh' %}
 dotfiles-install-zsh:
   cmd.run:
-    - name: ./install.sh -f zsh &> /dev/null
+    - name: ./install.sh -f zsh
     - cwd: /home/{{ pillar['login_user'] }}/dotfiles
     - user: {{ pillar['login_user'] }}
     - require:
       - git: dotfiles
       - pkg: dev_packages
 
-/home/{{ pillar['login_user'] }}/.zsh_history:
+/home/{{ pillar['login_user'] }}/.zhistory:
   file.managed:
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
@@ -121,13 +121,10 @@ dotfiles-install-zsh:
 {% if 'git' in pillar.get('extras', []) %}
 dotfiles-install-git:
   cmd.run:
-    - name: ./install.sh -f git &> /dev/null
+    - name: ./install.sh -f git
     - cwd: /home/{{ pillar['login_user'] }}/dotfiles
     - user: {{ pillar['login_user'] }}
     - require:
-      {% if 'vim' in pillar.get('extras', []) %}
-      - file: viminfo-touch
-      {% endif %}
       - git: dotfiles
       - pkg: dev_packages
 {% endif %}
