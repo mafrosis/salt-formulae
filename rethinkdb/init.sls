@@ -14,7 +14,7 @@ rethinkdb:
     - createhome: false
     - gid_from_name: true
   pkg.installed:
-    - version: 1.15.1~0{{ grains['oscodename'] }}
+    - version: 1.16.2+1~0{{ grains['oscodename'] }}
 
 
 python-pip-rethinkdb:
