@@ -10,7 +10,7 @@ ruby-switch:
 # install the -dev headers for the current ruby version
 ruby-dev:
   cmd.run:
-    - name: aptitude install $(ruby-switch --check | awk '/using/ {print $3}')-dev
+    - name: aptitude install -y $(ruby-switch --check | awk '/using/ {print $3}')-dev
     - require:
       - pkg: ruby-switch
 
