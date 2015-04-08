@@ -7,7 +7,7 @@ bind = '{{ gunicorn_host }}:{{ gunicorn_port }}'
 worker_class = '{{ worker_class }}'
 
 # configure number of gunicorn workers
-{% if 'env' in grains and grains['env'] == 'dev' %}
+{% if grains.get('env', '') == 'dev' %}
 workers = 1
 {% elif workers is defined %}
 workers = {{ workers }}
@@ -24,10 +24,8 @@ pidfile = '/tmp/gunicorn-{{ app_name }}.pid'
 
 # error log to STDERR
 errorlog = '-'
-{% if 'env' in grains and grains['env'] == 'dev' %}
+{% if grains.get('env', '') == 'dev' %}
 loglevel = 'debug'
-debug = True
 {% else %}
 loglevel = '{{ loglevel }}'
-debug = False
 {% endif %}
