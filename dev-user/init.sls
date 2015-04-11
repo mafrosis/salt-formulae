@@ -73,12 +73,14 @@ dotfiles:
     - target: /home/{{ pillar['login_user'] }}/dotfiles
     - runas: {{ pillar['login_user'] }}
     - submodules: true
+    - unless: test -d /home/{{ pillar['login_user'] }}/dotfiles/.git
     - require:
       - pkg: git
       - ssh_known_hosts: github_known_hosts
       {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
       - file: github.pky
       {% endif %}
+
 
 # run dotfiles install scripts
 {% if 'vim' in pillar.get('extras', []) %}
