@@ -5,17 +5,6 @@ rabbitmq-python-apt:
   pkg.installed:
     - name: python-apt
 
-rabbitmq-pkgrepo:
-  pkgrepo.managed:
-    - humanname: RabbitMQ PPA
-    - name: deb http://www.rabbitmq.com/debian testing main
-    - file: /etc/apt/sources.list.d/rabbitmq.list
-    - key_url: http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-    - require_in:
-      - pkg: rabbitmq-server
-    - require:
-      - pkg: rabbitmq-python-apt
-
 rabbitmq-server:
   pkg.installed:
     - require:
