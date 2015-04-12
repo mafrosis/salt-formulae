@@ -1,4 +1,5 @@
 include:
+  - create-app-user
   - supervisor
 
 {% set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) %}
