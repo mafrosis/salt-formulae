@@ -102,6 +102,7 @@ viminfo-touch:
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
     - mode: 644
+    - replace: false
 {% endif %}
 
 {% if shell == 'zsh' %}
@@ -118,6 +119,7 @@ dotfiles-install-zsh:
   file.managed:
     - user: {{ pillar['login_user'] }}
     - group: {{ pillar['login_user'] }}
+    - replace: false
 {% endif %}
 
 {% if 'git' in pillar.get('extras', []) %}
