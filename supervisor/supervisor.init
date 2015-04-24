@@ -6,7 +6,7 @@
 #               Further changes by Javier Fernandez-Sanguino <jfs@debian.org>
 #
 #		Adapted for Supervisor 3.0 by Matt Black <dev@mafro.net> 2013-08-21
-#		- PID/sock directory now /var/run/supervisor
+#		- PID/sock directory now /var/run
 #		- restart now works as expected
 #
 ### BEGIN INIT INFO
@@ -28,7 +28,7 @@ NAME=supervisord
 DESC=supervisor
 
 LOGDIR=/var/log/supervisor
-PIDDIR=/var/run/supervisor
+PIDDIR=/var/run
 PIDFILE=$PIDDIR/$NAME.pid
 
 # Time to wait for the server to die, in seconds
