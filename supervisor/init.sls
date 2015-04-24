@@ -30,8 +30,13 @@ supervisor-log-dir:
 
 supervisor-init-script:
   file.managed:
+{% if grains.get('systemd', False) %}
+    - name: /etc/systemd/system/supervisor.service
+    - source: salt://supervisor/supervisor.service
+{% else %}
     - name: /etc/init.d/supervisor
     - source: salt://supervisor/supervisor.init
+{% endif %}
     - user: root
     - mode: 744
 
