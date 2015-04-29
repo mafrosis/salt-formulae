@@ -1,3 +1,15 @@
+{% if grains['os'] == 'Debian' %}
+include:
+  - debian-nonfree
+
+extend:
+  nonfree-pkgrepo:
+    pkgrepo.managed:
+      - require_in:
+        - pkg: ffmpeg-install-codecs
+{% endif %}
+
+
 /var/local/ffmpeg_sources:
   file.directory
 
@@ -71,7 +83,6 @@ ffmpeg-download:
 ffmpeg-configure:
   cmd.run:
     - name: PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --enable-gpl --enable-libass --enable-libfaac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-nonfree
- 
     - cwd: /var/local/ffmpeg_sources/ffmpeg
     - unless: which ffmpeg
     - require:
