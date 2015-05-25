@@ -52,7 +52,7 @@ yasm-download:
 
 yasm-configure:
   cmd.run:
-    - name: ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
+    - name: ./configure --prefix="$HOME/ffmpeg_build" --bindir="/usr/local/bin"
     - cwd: /var/local/ffmpeg_sources/yasm
     - unless: which yasm
     - require:
@@ -82,7 +82,7 @@ ffmpeg-download:
 
 ffmpeg-configure:
   cmd.run:
-    - name: PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --enable-gpl --enable-libass --enable-libfaac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-nonfree
+    - name: PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="/usr/local/bin" --enable-gpl --enable-libass --enable-libfaac --enable-libfreetype --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-nonfree
     - cwd: /var/local/ffmpeg_sources/ffmpeg
     - unless: which ffmpeg
     - require:
@@ -90,7 +90,7 @@ ffmpeg-configure:
 
 ffmpeg-make-install:
   cmd.run:
-    - name: PATH="$HOME/bin:$PATH" make && make install && make distclean && hash -r
+    - name: make && make install && make distclean && hash -r
     - cwd: /var/local/ffmpeg_sources/ffmpeg
     - unless: which ffmpeg
     - require:
