@@ -5,7 +5,6 @@ supervisor-dependencies:
 supervisor-install:
   pip.installed:
     - name: supervisor
-    - update: true
     - require:
       - pkg: supervisor-dependencies
 
