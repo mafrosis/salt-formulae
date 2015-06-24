@@ -40,7 +40,7 @@ tmux-powerline-install:
   git.latest:
     - name: https://github.com/mafrosis/tmux-powerline.git
     - target: /home/{{ pillar['login_user'] }}/tmux-powerline
-    - runas: {{ pillar['login_user'] }}
+    - user: {{ pillar['login_user'] }}
     - unless: test -d /home/{{ pillar['login_user'] }}/tmux-powerline
     - require:
       - pkg: git

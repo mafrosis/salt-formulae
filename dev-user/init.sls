@@ -71,7 +71,7 @@ dotfiles:
   git.latest:
     - name: git@github.com:{{ pillar['github_username'] }}/dotfiles.git
     - target: /home/{{ pillar['login_user'] }}/dotfiles
-    - runas: {{ pillar['login_user'] }}
+    - user: {{ pillar['login_user'] }}
     - submodules: true
     - unless: test -d /home/{{ pillar['login_user'] }}/dotfiles/.git
     - require:
