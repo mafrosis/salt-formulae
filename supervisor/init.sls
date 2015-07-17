@@ -35,9 +35,9 @@ supervisor-init-script:
 {% else %}
     - name: /etc/init.d/supervisor
     - source: salt://supervisor/supervisor.init
+    - mode: 744
 {% endif %}
     - user: root
-    - mode: 744
 
 supervisor:
   service.running:
