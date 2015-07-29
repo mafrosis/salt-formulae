@@ -3,7 +3,7 @@
 include:
   - common
   {% if grains['os'] == "Debian" %}
-  - debian-backports
+  - debian-repos.backports
   {% endif %}
   - github
   - sudo

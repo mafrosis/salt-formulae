@@ -1,6 +1,6 @@
 {% if grains['os'] == 'Debian' %}
 include:
-  - debian-nonfree
+  - debian-repos.nonfree
 
 extend:
   nonfree-pkgrepo:

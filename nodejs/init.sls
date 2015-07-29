@@ -1,6 +1,6 @@
 {% if grains['os'] == "Debian" %}
 include:
-  - debian-backports
+  - debian-repos.backports
 {% endif %}
 
 
