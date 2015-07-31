@@ -69,7 +69,11 @@ extend:
 # grab the user's dotfiles
 dotfiles:
   git.latest:
+    {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
     - name: git@github.com:{{ pillar['github_username'] }}/dotfiles.git
+    {% else %}
+    - name: https://github.com/{{ pillar['github_username'] }}/dotfiles.git
+    {% endif %}
     - target: /home/{{ pillar['login_user'] }}/dotfiles
     - user: {{ pillar['login_user'] }}
     - submodules: true
