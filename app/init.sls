@@ -18,7 +18,7 @@ git-clone-app:
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
     - target: /srv/{{ pillar.get('app_directory_name', app_name) }}
-    - runas: {{ app_user }}
+    - user: {{ app_user }}
     - require:
       - pkg: git
       - file: github.pky
