@@ -8,7 +8,8 @@
 # TODO support no .tmux.conf in dotfiles; install a default
 
 # tmux-powerline theme for this deployment (or user, if a dotfiles install)
-{% set theme_name = pillar.get('app_name', pillar['login_user']) %}
+{% set login_user = pillar.get('login_user', 'vagrant') %}
+{% set theme_name = pillar.get('app_name', pillar.get('login_user', 'vagrant')) %}
 
 include:
   - common
@@ -28,9 +29,9 @@ tmux-stow:
 dotfiles-install-tmux:
   cmd.run:
     - name: ./install.sh -f tmux &> /dev/null
-    - unless: test -L /home/{{ pillar['login_user'] }}/.tmux.conf
-    - cwd: /home/{{ pillar['login_user'] }}/dotfiles
-    - user: {{ pillar['login_user'] }}
+    - unless: test -L /home/{{ login_user }}/.tmux.conf
+    - cwd: /home/{{ login_user }}/dotfiles
+    - user: {{ login_user }}
     - require:
       - git: dotfiles
       - pkg: tmux-stow
@@ -39,9 +40,9 @@ dotfiles-install-tmux:
 tmux-powerline-install:
   git.latest:
     - name: https://github.com/mafrosis/tmux-powerline.git
-    - target: /home/{{ pillar['login_user'] }}/tmux-powerline
-    - user: {{ pillar['login_user'] }}
-    - unless: test -d /home/{{ pillar['login_user'] }}/tmux-powerline
+    - target: /home/{{ login_user }}/tmux-powerline
+    - user: {{ login_user }}
+    - unless: test -d /home/{{ login_user }}/tmux-powerline
     - require:
       - pkg: git
       {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
@@ -51,11 +52,11 @@ tmux-powerline-install:
 # create tmux-powerline theme, including custom defined segments
 tmux-powerline-theme:
   file.managed:
-    - name: /home/{{ pillar['login_user'] }}/tmux-powerline/themes/{{ theme_name }}.sh
+    - name: /home/{{ login_user }}/tmux-powerline/themes/{{ theme_name }}.sh
     - source: salt://tmux/theme.sh
     - template: jinja
-    - user: {{ pillar['login_user'] }}
-    - group: {{ pillar['login_user'] }}
+    - user: {{ login_user }}
+    - group: {{ login_user }}
     - defaults:
         in_cloud: false
         gunicorn: false
@@ -68,7 +69,7 @@ tmux-powerline-theme:
 # patch tmux.conf ensure .tmux-powerline.conf is loaded
 tmux-powerline-conf-patch:
   file.append:
-    - name: /home/{{ pillar['login_user'] }}/.tmux.conf
+    - name: /home/{{ login_user }}/.tmux.conf
     - text: "\n# AUTOMATICALLY ADDED TMUX POWERLINE CONFIG\nsource-file ~/.tmux-powerline.conf"
     - require:
       - cmd: dotfiles-install-tmux
@@ -77,12 +78,12 @@ tmux-powerline-conf-patch:
 # this config is sourced into tmux's config file
 tmux-powerline-conf:
   file.managed:
-    - name: /home/{{ pillar['login_user'] }}/.tmux-powerline.conf
+    - name: /home/{{ login_user }}/.tmux-powerline.conf
     - source: salt://tmux/tmux-powerline.conf
     - template: jinja
-    - unless: test -f /home/{{ pillar['login_user'] }}/.tmux-powerline.conf
-    - user: {{ pillar['login_user'] }}
-    - group: {{ pillar['login_user'] }}
+    - unless: test -f /home/{{ login_user }}/.tmux-powerline.conf
+    - user: {{ login_user }}
+    - group: {{ login_user }}
     - require:
       - cmd: dotfiles-install-tmux
 
@@ -90,12 +91,12 @@ tmux-powerline-conf:
 # this config sets up tmux-powerline
 tmux-powerlinerc:
   file.managed:
-    - name: /home/{{ pillar['login_user'] }}/.tmux-powerlinerc
+    - name: /home/{{ login_user }}/.tmux-powerlinerc
     - source: salt://tmux/tmux-powerlinerc
     - template: jinja
-    - unless: test -f /home/{{ pillar['login_user'] }}/.tmux-powerlinerc
-    - user: {{ pillar['login_user'] }}
-    - group: {{ pillar['login_user'] }}
+    - unless: test -f /home/{{ login_user }}/.tmux-powerlinerc
+    - user: {{ login_user }}
+    - group: {{ login_user }}
     - context:
         theme: {{ theme_name }}
         patched_font_in_use: {{ pillar.get('tmux_patched_font', 'false') }}

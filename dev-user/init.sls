@@ -1,4 +1,5 @@
 {% set shell = pillar.get('shell', 'bash') %}
+{% set login_user = pillar.get('login_user', 'vagrant') %}
 
 include:
   - common
@@ -48,7 +49,7 @@ shell-{{ shell }}:
 
 modify-login-user:
   user.present:
-    - name: {{ pillar['login_user'] }}
+    - name: {{ login_user }}
     - shell: /bin/{{ shell }}
     - remove_groups: false
     - unless: getent passwd $LOGNAME | grep {{ shell }}
@@ -74,10 +75,10 @@ dotfiles:
     {% else %}
     - name: https://github.com/{{ pillar['github_username'] }}/dotfiles.git
     {% endif %}
-    - target: /home/{{ pillar['login_user'] }}/dotfiles
-    - user: {{ pillar['login_user'] }}
+    - target: /home/{{ login_user }}/dotfiles
+    - user: {{ login_user }}
     - submodules: true
-    - unless: test -d /home/{{ pillar['login_user'] }}/dotfiles/.git
+    - unless: test -d /home/{{ login_user }}/dotfiles/.git
     - require:
       - pkg: git
       - ssh_known_hosts: github_known_hosts
@@ -91,9 +92,9 @@ dotfiles:
 dotfiles-install-vim:
   cmd.run:
     - name: ./install.sh -f vim
-    - unless: test -L /home/{{ pillar['login_user'] }}/.vimrc
-    - cwd: /home/{{ pillar['login_user'] }}/dotfiles
-    - user: {{ pillar['login_user'] }}
+    - unless: test -L /home/{{ login_user }}/.vimrc
+    - cwd: /home/{{ login_user }}/dotfiles
+    - user: {{ login_user }}
     - require:
       - git: dotfiles
       - pkg: dev_packages
@@ -102,9 +103,9 @@ dotfiles-install-vim:
 # prevent ~/.viminfo being owned by root
 viminfo-touch:
   file.managed:
-    - name: /home/{{ pillar['login_user'] }}/.viminfo
-    - user: {{ pillar['login_user'] }}
-    - group: {{ pillar['login_user'] }}
+    - name: /home/{{ login_user }}/.viminfo
+    - user: {{ login_user }}
+    - group: {{ login_user }}
     - mode: 644
     - replace: false
 {% endif %}
@@ -113,16 +114,16 @@ viminfo-touch:
 dotfiles-install-zsh:
   cmd.run:
     - name: ./install.sh -f zsh
-    - cwd: /home/{{ pillar['login_user'] }}/dotfiles
-    - user: {{ pillar['login_user'] }}
+    - cwd: /home/{{ login_user }}/dotfiles
+    - user: {{ login_user }}
     - require:
       - git: dotfiles
       - pkg: dev_packages
 
-/home/{{ pillar['login_user'] }}/.zhistory:
+/home/{{ login_user }}/.zhistory:
   file.managed:
-    - user: {{ pillar['login_user'] }}
-    - group: {{ pillar['login_user'] }}
+    - user: {{ login_user }}
+    - group: {{ login_user }}
     - replace: false
 {% endif %}
 
@@ -130,8 +131,8 @@ dotfiles-install-zsh:
 dotfiles-install-git:
   cmd.run:
     - name: ./install.sh -f git
-    - cwd: /home/{{ pillar['login_user'] }}/dotfiles
-    - user: {{ pillar['login_user'] }}
+    - cwd: /home/{{ login_user }}/dotfiles
+    - user: {{ login_user }}
     - require:
       - git: dotfiles
       - pkg: dev_packages
