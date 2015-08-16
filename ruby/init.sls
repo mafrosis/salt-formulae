@@ -4,15 +4,24 @@ ruby:
   pkg.installed:
     - name: ruby{{ ruby_version }}
 
+{% if grains['os_family'] == "Debian" and grains['osmajorrelease'] < 8 %}
 ruby-switch:
   pkg.installed
 
 # install the -dev headers for the current ruby version
 ruby-dev:
   cmd.run:
-    - name: aptitude install -y $(ruby-switch --check | awk '/using/ {print $3}')-dev
+    - name: apt-get install -y $(ruby-switch --check | awk '/using/ {print $3}')-dev
     - require:
       - pkg: ruby-switch
+
+{% else %}
+ruby-dev:
+  cmd.run:
+    - name: apt-get install -y ruby-dev
+    - require:
+      - pkg: ruby
+{% endif %}
 
 {% if ruby_version %}
 ruby-set-version:
