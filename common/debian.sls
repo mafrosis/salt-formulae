@@ -31,6 +31,13 @@ esky:
 
 
 {% if pillar.get('timezone', false) %}
+{% if grains.get('systemd', False) %}
+dbus:
+  pkg.installed:
+    - require_in:
+      - timezone: {{ pillar['timezone'] }}
+{% endif %}
+
 {{ pillar['timezone'] }}:
   timezone.system:
     - utc: True
