@@ -1,5 +1,4 @@
 include:
-  - app
   - create-app-user
   - virtualenv
 
