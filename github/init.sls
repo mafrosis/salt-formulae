@@ -1,3 +1,6 @@
+include:
+  - create-app-user
+
 {% set ssh_user = pillar.get('app_user', pillar.get('login_user', 'vagrant')) %}
 
 ssh-home-dir:
@@ -6,6 +9,8 @@ ssh-home-dir:
     - user: {{ ssh_user }}
     - group: {{ ssh_user }}
     - mode: 700
+    - require:
+      - user: create-app-user
 
 ssh-config:
   file.managed:
