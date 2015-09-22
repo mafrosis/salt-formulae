@@ -24,6 +24,7 @@ git-clone-app:
     {% endif %}
     - target: /srv/{{ pillar.get('app_directory_name', app_name) }}
     - identity: /etc/ssh/git.{{ grains['host'] }}.pky
+    - submodules: true
     - user: {{ app_user }}
     - require:
       - pkg: git
