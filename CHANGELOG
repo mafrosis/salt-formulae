@@ -1,3 +1,14 @@
+v0.2.0 - 2015-09-22
+
+rethinkdb: updated to latest v2.1.4 (e6f8fd2)
+app.source: always fetch submodules in git.latest (aae9693)
+create-app-user: only set shell when grain env=prod (1640501)
+rabbitmq.celerybeat: helper state which creates /var/celerybeat (591ff50)
+create-app-user: decouple from github state (4e63b7f)
+create-app-user: no longer depends on github state (09881c4)
+app.source: cloning app source code no longer requires github state (3361ae5)
+app.virtualenv: venv creation no longer depends on getting source code (08d5b16)
+
 v0.1.0 - 2015-09-16
 
 Initial release
