@@ -45,7 +45,7 @@ tmux-powerline-install:
     - unless: test -d /home/{{ login_user }}/tmux-powerline
     - require:
       - pkg: git
-      {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
+      {% if pillar.get('github_key', false) or pillar.get('github_key_path', false) %}
       - file: github.pky
       {% endif %}
 

@@ -70,7 +70,7 @@ extend:
 # grab the user's dotfiles
 dotfiles:
   git.latest:
-    {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
+    {% if pillar.get('github_key', false) or pillar.get('github_key_path', false) %}
     - name: git@github.com:{{ pillar['github_username'] }}/dotfiles.git
     {% else %}
     - name: https://github.com/{{ pillar['github_username'] }}/dotfiles.git
@@ -82,7 +82,7 @@ dotfiles:
     - require:
       - pkg: git
       - ssh_known_hosts: github_known_hosts
-      {% if pillar.get('github_key', False) or pillar.get('github_key_path', False) %}
+      {% if pillar.get('github_key', false) or pillar.get('github_key_path', false) %}
       - file: github.pky
       {% endif %}
 

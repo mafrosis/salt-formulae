@@ -1,4 +1,4 @@
-{% if pillar.get('locale', False) %}
+{% if pillar.get('locale', false) %}
 locale-gen:
   cmd.run:
     - name: locale-gen --purge {{ pillar['locale'] }}
@@ -10,7 +10,7 @@ locale-gen:
         LANGUAGE="{{ pillar['locale'] }}:en"
 {% endif %}
 
-{% if pillar.get('timezone', False) %}
+{% if pillar.get('timezone', false) %}
 /etc/timezone:
   file.managed:
     - contents: {{ pillar['timezone'] }}

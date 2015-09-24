@@ -29,13 +29,13 @@ rabbitmq-guest-remove:
       - pkg: rabbitmq-server
 
 # create rabbitmq user/vhost from pillar
-{% if pillar.get('rabbitmq_vhost', False) %}
+{% if pillar.get('rabbitmq_vhost', false) %}
 rabbitmq-vhost:
   rabbitmq_vhost.present:
     - name: {{ pillar['rabbitmq_vhost'] }}
 {% endif %}
 
-{% if pillar.get('rabbitmq_user', False) %}
+{% if pillar.get('rabbitmq_user', false) %}
 rabbitmq-user:
   rabbitmq_user.present:
     - name: {{ pillar['rabbitmq_user'] }}
@@ -47,7 +47,7 @@ rabbitmq-user:
         - '.*'
     - require:
       - pkg: rabbitmq-server
-      {% if pillar.get('rabbitmq_vhost', False) %}
+      {% if pillar.get('rabbitmq_vhost', false) %}
       - rabbitmq_vhost: rabbitmq-vhost
       {% endif %}
 {% endif %}

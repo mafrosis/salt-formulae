@@ -33,7 +33,7 @@ github_known_hosts:
     - require:
       - file: ssh-home-dir
 
-{% if pillar.get('github_key', False) %}
+{% if pillar.get('github_key', false) %}
 github.pky:
   file.managed:
     - contents_pillar: github_key
@@ -46,7 +46,7 @@ github.pky:
       - ssh_known_hosts: github_known_hosts
     - order: first
 
-{% elif pillar.get('github_key_path', False) %}
+{% elif pillar.get('github_key_path', false) %}
 github.pky:
   file.managed:
     - source: salt://{{ pillar['github_key_path'] }}

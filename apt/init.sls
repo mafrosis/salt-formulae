@@ -6,7 +6,7 @@ apt-no-recommends:
         APT::Install-Suggests "0";
     - order: first
 
-{% if pillar.get('autoupdate', False) %}
+{% if pillar.get('autoupdate', false) %}
 autoupdate-requisites:
   pkg.latest:
     - names:
@@ -23,7 +23,7 @@ autoupdate-requisites:
         APT::Periodic::Unattended-Upgrade "1";
         APT::Periodic::AutocleanInterval "7";
 
-{% if pillar.get('admin_email', False) %}
+{% if pillar.get('admin_email', false) %}
 apticron:
   pkg.latest
 
