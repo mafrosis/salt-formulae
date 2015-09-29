@@ -18,7 +18,11 @@ git-clone-key:
 
 git-clone-app:
   git.latest:
+    {% if pillar.get('github_key', false) or pillar.get('github_key_path', false) %}
     - name: git@github.com:{{ pillar['app_repo'] }}.git
+    {% else %}
+    - name: https://github.com/{{ pillar['app_repo'] }}.git
+    {% endif %}
     {% if pillar.get('app_repo_rev', false) %}
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
