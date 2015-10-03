@@ -5,8 +5,8 @@
 closure-compiler:
   file.managed:
     - name: /tmp/compiler.tar.gz
-    - source: http://dl.google.com/closure-compiler/compiler-20141120.tar.gz
-    - source_hash: sha1=a8ce7b8f4241d180c8852ff740d1e8ebf243d57f
+    - source: http://dl.google.com/closure-compiler/compiler-20150920.tar.gz
+    - source_hash: sha1=a089d955537c938ae87727db9b3c1df95ee862b0
   cmd.wait:
     - name: tar xzf compiler.tar.gz && chmod +r compiler.jar && mv compiler.jar /usr/local/lib
     - cwd: /tmp
