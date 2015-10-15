@@ -25,9 +25,6 @@ include:
   - debian-repos.backports
   {% endif %}
   - sudo
-  {% if 'tmux' in pillar.get('extras', []) %}
-  - tmux
-  {% endif %}
 
 dev_packages:
   pkg.latest:
