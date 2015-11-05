@@ -19,8 +19,8 @@ workers = multiprocessing.cpu_count() * 2 + 1
 # dont daemonize; use supervisor
 daemon = False
 timeout = {{ timeout }}
-proc_name = 'gunicorn-{{ app_name }}'
-pidfile = '/tmp/gunicorn-{{ app_name }}.pid'
+proc_name = '{{ app_name }}-gunicorn'
+pidfile = '/tmp/{{ app_name }}-gunicorn.pid'
 
 # error log to STDERR
 errorlog = '-'
