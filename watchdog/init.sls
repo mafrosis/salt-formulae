@@ -11,6 +11,7 @@
 #       pattern: "*.py"
 #       command: "supervisorctl restart gunicorn"
 #       dir: /srv/application
+#       polling: true
 #     celeryd:
 #       pattern: "tasks.py"
 #       command: "supervisorctl restart celeryd"
