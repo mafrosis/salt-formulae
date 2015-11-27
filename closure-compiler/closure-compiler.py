@@ -43,30 +43,29 @@ def entrypoint():
 def main(args):
     error = False
 
-    # process each file supplied as an argument
-    for f in args.input:
-        try:
-            _process_file(args, f)
+    try:
+        _process_input(args, args.input)
 
-        except CompileError as ex:
-            sys.stderr.write(str(ex))
-            sys.stderr.flush()
-            error = True
+    except CompileError as ex:
+        sys.stderr.write(str(ex))
+        sys.stderr.flush()
+        error = True
 
     if error:
         # error return code
         sys.exit(1)
 
 
-def _process_file(args, f):
+def _process_input(args, files):
     # read input file
     tmp = []
-    for line in f:
-        # ignore lines starting with ;;;
-        if not line.strip().startswith(';;;'):
-            tmp.append(line)
+    for f in files:
+        for line in f:
+            # ignore lines starting with ;;;
+            if not line.strip().startswith(';;;'):
+                tmp.append(line)
     js_code = ''.join(tmp)
-    
+
     # gzip type is text for Closure Compiler service
     if args.output_format == 'gzip':
         output_format = 'text'
