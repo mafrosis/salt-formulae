@@ -6,6 +6,7 @@ include:
 required-packages:
   pkg.latest:
     - names:
+      - apt-transport-https
       - coreutils
       - debconf-utils
       {% if grains['os'] == 'Ubuntu' %}
