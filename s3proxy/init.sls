@@ -27,7 +27,7 @@ s3proxy-config:
     - name: /etc/s3proxy.conf
     - contents: |
         s3proxy.authorization=none
-        s3proxy.endpoint=http://127.0.0.1:8880
+        s3proxy.endpoint=http://0.0.0.0:8880
         jclouds.provider=filesystem
         jclouds.identity=identity
         jclouds.credential=credential
@@ -50,8 +50,8 @@ s3proxy-supervisor-service:
     - require:
       - pkg: s3proxy-dependencies
       - cmd: s3proxy-install
-      - file: s3proxy-config
       - file: s3proxy-storage
       - service: supervisor
     - watch:
       - file: s3proxy-supervisor-config
+      - file: s3proxy-config
