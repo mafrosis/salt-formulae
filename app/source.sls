@@ -1,5 +1,6 @@
 {% set app_name = pillar.get('app_name', 'app_name') %}
 {% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
+{% set env = grains.get('env', '') %}
 
 app-directory:
   file.directory:
@@ -8,6 +9,7 @@ app-directory:
     - group: {{ app_user }}
     - makedirs: true
 
+{% if pillar.get('github_key', false) %}
 git-clone-key:
   file.managed:
     - contents_pillar: github_key
@@ -15,6 +17,7 @@ git-clone-key:
     - user: {{ app_user }}
     - group: {{ app_user }}
     - mode: 600
+{% endif %}
 
 git-clone-app:
   git.latest:
@@ -27,12 +30,16 @@ git-clone-app:
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
     - target: /srv/{{ pillar.get('app_directory_name', app_name) }}
+    {% if pillar.get('github_key', false) %}
     - identity: /etc/ssh/git.{{ grains['host'] }}.pky
+    {% endif %}
     - submodules: true
     - user: {{ app_user }}
     - require:
       - pkg: git
+      {% if pillar.get('github_key', false) %}
       - file: git-clone-key
+      {% endif %}
       - file: app-directory
 
 {% if pillar.get('upstream_repo', false) %}
