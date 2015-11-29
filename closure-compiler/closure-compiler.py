@@ -26,6 +26,11 @@ OUTPUT_INFO = {
     'stats': 'statistics',
 }
 
+LANGUAGE = {
+    'ecma3': 'ECMASCRIPT3',
+    'ecma5': 'ECMASCRIPT5',
+    'ecma6': 'ECMASCRIPT6',
+}
 
 def entrypoint():
     try:
@@ -75,6 +80,7 @@ def _process_input(args, files):
     # build POST params from args
     params = urllib.urlencode([
         ('js_code', js_code),
+        ('language', LANGUAGE[args.language]),
         ('output_format', output_format),
         ('output_info', OUTPUT_INFO[args.output_info]),
         ('compilation_level', COMPILATION_LEVEL[args.comp_level]),
@@ -100,7 +106,7 @@ def _process_input(args, files):
             f.write(js_output)
         print 'Wrote output.js.gz'
     else:
-        print js_output
+        sys.stdout.write(js_output)
 
 
 def parse_command_line():
@@ -112,14 +118,17 @@ def parse_command_line():
         'input', type=argparse.FileType('r'), nargs='+',
         help='File path or URL containing JS to process, also accepts STDIN')
     parser.add_argument(
-        '-c', '--comp-level', choices=['whitespace','simple','advanced'], default='simple',
+        '-c', '--comp-level', choices=COMPILATION_LEVEL.keys(), default='simple',
         help='Compilation level: whitespace, simple or advanced. Defaults to simple.')
     parser.add_argument(
-        '-o', '--output-info', choices=['code','warn','errors','stats'], default='code',
+        '-o', '--output-info', choices=OUTPUT_INFO.keys(), default='code',
         help='Output info: code, warnings, errors or statistics.')
     parser.add_argument(
         '-f', '--output-format', choices=['text','gzip','xml','json'], default='text',
         help='Output format: text, gzip, XML or JSON. Defaults to text.')
+    parser.add_argument(
+        '-l', '--language', choices=LANGUAGE.keys(), default='ecma5',
+        help='Language: ECMAScript language version to target')
 
     # TODO output_file_name
 
