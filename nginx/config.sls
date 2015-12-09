@@ -3,33 +3,26 @@ include:
 
 {% set app_name = pillar.get('app_name', 'app_logs') %}
 
-extend:
-  nginx:
-    service.running:
-      - watch:
-        - file: /etc/nginx/sites-available/{{ app_name }}.conf
-
-
-# support a HTTP, and a HTTPS config if configured
+# always create port 80 config, port 443 if ssl set in pillar
 {% if pillar.get('ssl', false) %}
 {% set ports = [80, 443] %}
 {% else %}
 {% set ports = [80] %}
 {% endif %}
 
+extend:
+  nginx:
+    service.running:
+      - watch:
+        {% for port in ports %}
+        - file: nginx-app-config-{{ port }}
+        {% endfor %}
+
 {% for port in ports %}
 nginx-app-config-{{ port }}:
   file.managed:
-    {% if port == 80 %}
-    - name: /etc/nginx/sites-available/{{ app_name }}.conf
-    {% else %}
     - name: /etc/nginx/sites-available/{{ app_name }}-{{ port }}.conf
-    {% endif %}
-    {% if pillar.get('upstream_host', false) %}
-    - source: salt://nginx/upstream.tmpl.conf
-    {% else %}
-    - source: salt://nginx/simple.tmpl.conf
-    {% endif %}
+    - source: salt://nginx/site.tmpl.conf
     - template: jinja
     - defaults:
         port: {{ port }}
@@ -40,12 +33,10 @@ nginx-app-config-{{ port }}:
         static_gzip_types: web
         static_dir: false
         static_alias: false
-        {% if pillar.get('upstream_host', false) %}
-        upstream_host: {{ pillar['upstream_host'] }}
-        upstream_port: {{ pillar['upstream_port'] }}
+        upstream_host: {{ pillar.get('upstream_host', '') }}
+        upstream_port: {{ pillar.get('upstream_port', '') }}
         upstream_gzip: false
         upstream_gzip_types: ''
-        {% endif %}
         ssl: {{ pillar.get('ssl', false) }}
     - require:
       - pkg: nginx
@@ -55,8 +46,8 @@ nginx-app-config-{{ port }}:
 
 /etc/nginx/sites-enabled/{{ app_name }}.conf:
   file.symlink:
-    - target: /etc/nginx/sites-available/{{ app_name }}.conf
+    - target: /etc/nginx/sites-available/{{ app_name }}-80.conf
     - require:
-      - file: /etc/nginx/sites-available/{{ app_name }}.conf
+      - file: /etc/nginx/sites-available/{{ app_name }}-80.conf
     - require_in:
       - service: nginx
