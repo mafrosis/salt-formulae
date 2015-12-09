@@ -38,6 +38,8 @@ nginx-app-config-{{ port }}:
         app_name: {{ app_name }}
         static_gzip: true
         static_gzip_types: web
+        static_dir: false
+        static_alias: false
         {% if pillar.get('upstream_host', false) %}
         upstream_host: {{ pillar['upstream_host'] }}
         upstream_port: {{ pillar['upstream_port'] }}
