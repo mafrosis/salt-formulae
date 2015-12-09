@@ -38,6 +38,7 @@ nginx-app-config-{{ port }}:
         upstream_gzip: false
         upstream_gzip_types: ''
         ssl: {{ pillar.get('ssl', false) }}
+        acmetool_ssl: {{ pillar.get('acmetool_ssl', false) }}
     - require:
       - pkg: nginx
     - require_in:
