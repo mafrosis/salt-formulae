@@ -30,6 +30,9 @@ esky:
     - require:
       - pkg: required-packages
 
+pyOpenSSL:
+  pip.installed:
+    - upgrade: true
 
 {% if pillar.get('timezone', false) %}
 {% if grains.get('systemd', false) %}
