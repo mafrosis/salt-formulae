@@ -29,6 +29,11 @@ git-clone-app:
     {% if pillar.get('app_repo_rev', false) %}
     - rev: {{ pillar['app_repo_rev'] }}
     {% endif %}
+    {% if env == 'prod' or env == 'staging' %}
+    - force_checkout: true
+    {% elif env == 'dev' %}
+    - unless: test -d /srv/{{ pillar.get('app_directory_name', app_name) }}/.git
+    {% endif %}
     - target: /srv/{{ pillar.get('app_directory_name', app_name) }}
     {% if pillar.get('github_key', false) %}
     - identity: /etc/ssh/git.{{ grains['host'] }}.pky
