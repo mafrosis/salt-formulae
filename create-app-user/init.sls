@@ -1,4 +1,5 @@
 {% set app_user = pillar.get('app_user', pillar['login_user']) %}
+{% set env = grains.get('env', '') %}
 
 create-app-user:
   group.present:
@@ -12,7 +13,7 @@ create-app-user:
       - group: {{ app_user }}
     - order: first
 
-{% if grains.get('env', '') == 'prod' %}
+{% if env == 'prod' or env == 'staging' %}
 set-app-user-shell:
   user.present:
     - name: {{ app_user }}
