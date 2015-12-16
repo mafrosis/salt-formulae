@@ -2,6 +2,9 @@
 
 # https://github.com/google/closure-compiler/wiki/Binary-Downloads
 
+openjdk-7-jre-headless:
+  pkg.installed
+
 closure-compiler:
   file.managed:
     - name: /tmp/compiler.tar.gz
@@ -13,9 +16,8 @@ closure-compiler:
     - cwd: /tmp
     - watch:
       - file: closure-compiler
-
-openjdk-7-jre-headless:
-  pkg.installed
+    - require:
+      - pkg: openjdk-7-jre-headless
 
 # javascript compiler pre-commit hook
 publish-jscript-precommit-hook:
