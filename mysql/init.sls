@@ -1,6 +1,5 @@
 mysql-server-5.5:
-  pkg.latest:
-    - debconf: salt://mysql/mysql-server-5.5.ans
+  pkg.latest
 
 mysql:
   service.running:
