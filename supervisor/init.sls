@@ -29,13 +29,13 @@ supervisor-log-dir:
 
 supervisor-init-script:
   file.managed:
-{% if grains.get('systemd', false) %}
-    - name: /etc/systemd/system/supervisor.service
-    - source: salt://supervisor/supervisor.service
-{% else %}
+{% if grains.get('virtual_subtype', '') == 'Docker' or grains.get('systemd', false) == false %}
     - name: /etc/init.d/supervisor
     - source: salt://supervisor/supervisor.init
     - mode: 744
+{% else %}
+    - name: /etc/systemd/system/supervisor.service
+    - source: salt://supervisor/supervisor.service
 {% endif %}
     - user: root
 
