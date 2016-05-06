@@ -22,8 +22,8 @@
 
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/bin/python
-DAEMON_OPTS=/usr/local/bin/supervisord
+DAEMON=/usr/local/bin/supervisord
+DAEMON_OPTS=
 NAME=supervisord
 DESC=supervisor
 
