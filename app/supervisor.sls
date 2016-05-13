@@ -1,5 +1,4 @@
 include:
-  - create-app-user
   - supervisor
 
 {% set supervisor_name = pillar.get('supervisor_name', pillar.get('app_name', 'supervisord')) %}
@@ -14,8 +13,6 @@ include:
         purge: false
         app_user: {{ app_user }}
         loglevel: warning
-    - require:
-      - user: {{ app_user }}
     - require_in:
       - service: supervisor
 

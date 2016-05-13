@@ -1,5 +1,4 @@
 include:
-  - create-app-user
   - virtualenv
 
 {% set venv_name = pillar.get('virtualenv_name', pillar.get('app_name', 'venv')) %}
