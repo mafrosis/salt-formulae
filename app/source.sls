@@ -2,6 +2,10 @@
 {% set app_user = pillar.get('app_user', pillar.get('login_user', 'root')) %}
 {% set env = grains.get('env', '') %}
 
+app-reqs:
+  pkg.installed:
+    - name: git
+
 app-directory:
   file.directory:
     - name: /srv/{{ pillar.get('app_directory_name', app_name) }}
