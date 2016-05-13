@@ -1,16 +1,15 @@
 include:
   - apt
-  - common
 
 
 pip-dependencies:
   pkg.latest:
     - names:
       - python-dev
+      - python-pip
       - build-essential
     - require:
       - file: apt-no-recommends
-      - pkg: required-packages
 
 virtualenvwrapper:
   pip.installed:
