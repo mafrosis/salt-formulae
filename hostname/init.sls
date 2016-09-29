@@ -1,5 +1,6 @@
 {% set hostname = pillar.get("hostname", pillar.get("app_name", "localhost")) %}
 
+
 hostname-{{ hostname }}:
   host.present:
     - name: {{ hostname }}
