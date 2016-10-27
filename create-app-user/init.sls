@@ -13,7 +13,7 @@ create-app-user:
       - group: {{ app_user }}
     - order: first
 
-{% if env == 'prod' or env == 'staging' %}
+{% if env != 'dev' %}
 set-app-user-shell:
   user.present:
     - name: {{ app_user }}
