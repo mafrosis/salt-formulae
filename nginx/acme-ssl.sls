@@ -1,11 +1,5 @@
-{% set acmetool_version = 'v0.0.23' %}
-{% set acmetool_sha1 = 'f429f3b924d1432a88def03547f2d936e01690cd' %}
-
-{% if grains['env'] == 'prod' %}
-{% set acme_server = 'acme-v01' %}
-{% else %}
-{% set acme_server = 'acme-staging' %}
-{% endif %}
+{% set acmetool_version = 'v0.0.56' %}
+{% set acmetool_sha1 = '9095b30dd7c35364f2f1a53a07addf8775472151' %}
 
 acmetool-download:
   file.managed:
@@ -30,7 +24,6 @@ acmetool-response-file:
     - name: /var/lib/acme/conf/responses
     - makedirs: true
     - contents: |
-        acmetool-quickstart-choose-server: https://{{ acme_server }}.api.letsencrypt.org/directory
         acmetool-quickstart-choose-method: webroot
         acme-enter-email: {{ pillar['acmetool_email'] }}
         acmetool-quickstart-complete: true
