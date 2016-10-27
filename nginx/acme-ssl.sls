@@ -1,6 +1,5 @@
 {% set acmetool_version = 'v0.0.23' %}
 {% set acmetool_sha1 = 'f429f3b924d1432a88def03547f2d936e01690cd' %}
-{% set server_url = pillar['dns'][grains['env']] %}
 
 {% if grains['env'] == 'prod' %}
 {% set acme_server = 'acme-v01' %}
@@ -28,7 +27,8 @@ acmetool-install:
 
 acmetool-response-file:
   file.managed:
-    - name: /tmp/acme-responses.yaml
+    - name: /var/lib/acme/conf/responses
+    - makedirs: true
     - contents: |
         acmetool-quickstart-choose-server: https://{{ acme_server }}.api.letsencrypt.org/directory
         acmetool-quickstart-choose-method: webroot
@@ -39,49 +39,5 @@ acmetool-response-file:
         acmetool-quickstart-install-cronjob: true
         acmetool-quickstart-install-haproxy-script: false
         acmetool-quickstart-install-redirector-systemd: false
-        acmetool-quickstart-rsa-key-size: 2048
-        acme-agreement:https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf: true
-
-acmetool-quickstart:
-  cmd.run:
-    - name: acmetool quickstart --response-file=/tmp/acme-responses.yaml
-    - require:
-      - file: acmetool-install
-      - file: acmetool-response-file
-
-acmetool-want:
-  cmd.run:
-    - name: acmetool want --no-reconcile {{ server_url }}
-    - require:
-      - cmd: acmetool-quickstart
-
-# a temporary SSL certificate is necessary to ensure nginx starts okay
-# this is replaced by acmetool when the machine is booted for real
-acmetool-temp-cert-dir:
-  file.directory:
-    - name: /var/lib/acme/live/{{ server_url }}
-    - require:
-      - cmd: acmetool-quickstart
-
-acmetool-temp-key:
-  x509.private_key_managed:
-    - name: /var/lib/acme/live/{{ server_url }}/privkey
-    - require:
-      - file: acmetool-temp-cert-dir
-
-acmetool-temp-cert:
-  x509.certificate_managed:
-    - name: /var/lib/acme/live/{{ server_url }}/fullchain
-    - signing_private_key: /var/lib/acme/live/{{ server_url }}/privkey
-    - CN: www.example.com
-    - days_valid: 1
-    - require:
-      - x509: acmetool-temp-key
-    - require_in:
-      - service: nginx
-
-acmetool-temp-cert-dir-cleanup:
-  file.absent:
-    - name: /var/lib/acme/live/{{ server_url }}
-    - require:
-      - service: nginx
+        acmetool-quickstart-rsa-key-size: 4096
+        acme-agreement:https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf: true
