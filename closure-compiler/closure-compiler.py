@@ -35,29 +35,17 @@ LANGUAGE = {
 def entrypoint():
     try:
         args = parse_command_line()
-        main(args)
+
+        _process_input(args, args.input)
 
     except KeyboardInterrupt:
         sys.exit(0)
+    except CompileError as ex:
+        sys.stderr.write(str(ex))
+        sys.exit(1)
     except AppError as ex:
         sys.stderr.write('{}: {}\n'.format(ex.__class__.__name__, ex))
         sys.stderr.flush()
-        sys.exit(1)
-
-
-def main(args):
-    error = False
-
-    try:
-        _process_input(args, args.input)
-
-    except CompileError as ex:
-        sys.stderr.write(str(ex))
-        sys.stderr.flush()
-        error = True
-
-    if error:
-        # error return code
         sys.exit(1)
 
 
@@ -77,28 +65,33 @@ def _process_input(args, files):
     else:
         output_format = args.output_format
 
-    # build POST params from args
-    params = urllib.urlencode([
-        ('js_code', js_code),
-        ('language', LANGUAGE[args.language]),
-        ('output_format', output_format),
-        ('output_info', OUTPUT_INFO[args.output_info]),
-        ('compilation_level', COMPILATION_LEVEL[args.comp_level]),
-    ])
+    # query closure compiler service
+    js_output = _query(
+        js_code,
+        LANGUAGE[args.language],
+        output_format,
+        OUTPUT_INFO[args.output_info],
+        COMPILATION_LEVEL[args.comp_level],
+        args.pretty,
+    )
 
-    # connect to Closure service
-    conn = httplib.HTTPConnection('closure-compiler.appspot.com')
-    conn.request('POST', '/compile', params, {
-        "Content-type": "application/x-www-form-urlencoded"
-    })
-    response = conn.getresponse()
-    js_output = response.read()
-    conn.close()
+    if args.output_info in ('errors', 'warnings'):
+        if len(js_output.strip()) > 0:
+            raise CompileError(js_output)
+        else:
+            return
 
-    # check for errors returned from webservice
-    if 'ERROR' in js_output:
-        # replace Input_0 placeholder with actual filename
-        raise CompileError(js_output.replace('Input_0', f.name))
+    # if compiled code is empty..
+    if args.output_info == 'code' and len(js_output.strip()) == 0:
+        # re-run querying for errors
+        errors = _query(
+            js_code,
+            LANGUAGE[args.language],
+            'text',
+            'errors',
+            COMPILATION_LEVEL[args.comp_level]
+        )
+        raise CompileError(errors)
 
     # compress gzip output
     if args.output_format == 'gzip':
@@ -107,6 +100,32 @@ def _process_input(args, files):
         print 'Wrote output.js.gz'
     else:
         sys.stdout.write(js_output)
+
+
+def _query(js_code, lang, output_format, output_info, comp_level, pretty=False):
+    # build POST params from args
+    params = [
+        ('js_code', js_code),
+        ('language', lang),
+        ('output_format', output_format),
+        ('output_info', output_info),
+        ('compilation_level', comp_level),
+    ]
+    if pretty:
+        params.append(('formatting', 'pretty_print'))
+
+    # connect to Closure service
+    conn = httplib.HTTPConnection('closure-compiler.appspot.com')
+    conn.request(
+        'POST',
+        '/compile', 
+        urllib.urlencode(params),
+        {'Content-type': 'application/x-www-form-urlencoded'}
+    )
+    response = conn.getresponse()
+    js_output = response.read()
+    conn.close()
+    return js_output
 
 
 def parse_command_line():
@@ -129,6 +148,9 @@ def parse_command_line():
     parser.add_argument(
         '-l', '--language', choices=LANGUAGE.keys(), default='ecma5',
         help='Language: ECMAScript language version to target')
+    parser.add_argument(
+        '-p', '--pretty', action='store_true',
+        help='Pretty formatting for output javascript')
 
     # TODO output_file_name
 
