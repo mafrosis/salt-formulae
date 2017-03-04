@@ -24,6 +24,13 @@ required-packages:
     - require:
       - file: apt-no-recommends
 
+# use pip to upgrade pip to latest
+pip:
+  pip.installed:
+    - upgrade: true
+    - require:
+      - pkg: required-packages
+
 esky:
   pip.installed:
     - require:
@@ -32,6 +39,7 @@ esky:
 pyOpenSSL:
   pip.installed:
     - upgrade: true
+
 
 {% if pillar.get('timezone', false) %}
 {% if grains.get('systemd', false) %}
