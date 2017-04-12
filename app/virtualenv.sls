@@ -14,5 +14,4 @@ app-virtualenv:
     {% endif %}
     - user: {{ app_user }}
     - require:
-      - pip: virtualenvwrapper
       - user: {{ app_user }}
