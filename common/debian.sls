@@ -6,6 +6,7 @@ required-packages:
   pkg.latest:
     - names:
       - apt-transport-https
+      - build-essential
       - coreutils
       - debconf-utils
       {% if grains['os'] == 'Ubuntu' %}
