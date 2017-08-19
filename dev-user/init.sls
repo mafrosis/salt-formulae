@@ -108,12 +108,4 @@ bootstrap-dotfiles:
     - user: {{ login_user }}
     - require:
       - git: dotfiles
-{% else %}
-bootstrap-dotfiles:
-  cmd.run:
-    - name: /bin/{{ shell }} bootstrap
-    - cwd: /home/{{ login_user }}/dotfiles
-    - user: {{ login_user }}
-    - require:
-      - git: dotfiles
 {% endif %}
