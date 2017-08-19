@@ -32,10 +32,11 @@ pip:
     - require:
       - pkg: required-packages
 
-esky:
+setuptools:
   pip.installed:
+    - upgrade: true
     - require:
-      - pkg: required-packages
+      - pip: pip
 
 pyOpenSSL:
   pip.installed:
